@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "888337382632",
+    "project_id": "uni-dating-51be5",
+    "storage_bucket": "uni-dating-51be5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888337382632:android:5d4fd157d7222ef02a9d5d",
+        "android_client_info": {
+          "package_name": "com.tlptech.uni_dating"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888337382632-iqsp7k836mvr2pnqctooo9ras5ticcic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3k2AyEtGwXm7X8ch8PzpoMW0hQGttL3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888337382632-iqsp7k836mvr2pnqctooo9ras5ticcic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

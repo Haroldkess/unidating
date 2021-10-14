@@ -1,0 +1,502 @@
+{
+   "lbl_Add_new_message": "Add New Message",
+   "@lbl_Add_new_message":{
+      "description": "Add New Message"
+   },
+   "hint_Searchlbl_Search_Message_match": "Search Message,Match",
+   "@hint_Searchlbl_Search_Message_match":{
+      "description": "Search Message,Match"
+   },
+   "lbl_New_Matches" : "New Matches",
+   "@lbl_New_Matches":{
+      "description": "New Matches"
+   },
+   "lbl_All_Messages" : "All Messages",
+   "@lbl_All_Messages":{
+      "description": "All Messages"
+   },
+   "lbl_Add_Story" : "Add story",
+   "@lbl_Add_Story":{
+      "description": "Add story"
+   },
+   "lbl_create_story" : "Create Story",
+   "@lbl_create_story":{
+      "description": "Create Story"
+   },
+   "lbl_Text": "Text",
+   "@lbl_Text":{
+      "description": "Text"
+   },
+   "lbl_Aa": "Aa",
+   "@lbl_Aa":{
+      "description": "Aa"
+   },
+   "lbl_Media" : "Media",
+   "@lbl_Media":{
+      "description": "Media"
+   },
+   "btn_create" : "Create",
+   "@btn_create":{
+      "description": "Create"
+   },
+   "lbl_done" : "Done",
+   "@lbl_done":{
+      "description": "Done"
+   },
+   "lbl_hint_start_typing" : "Start Typing",
+   "@lbl_hint_start_typing":{
+      "description": "Start Typing"
+   },
+   "lbl_Add_your_Story" : "Add Your Story",
+   "@lbl_Add_your_Story":{
+      "description": "Add Your Story"
+   },
+   "lbl_Tab_All" : "All",
+   "@lbl_Tab_All":{
+      "description": "All"
+   },
+   "lbl_Tab_Online" : "Online",
+   "@lbl_Tab_Online":{
+      "description": "Online"
+   },
+   "lbl_Tab_new_daters" : "New Daters",
+   "@lbl_Tab_new_daters":{
+      "description": "New Daters"
+   },
+   "lbl_Tab_liked_you" : "Liked You",
+   "@lbl_Tab_liked_you":{
+      "description": "Liked You"
+   },
+   "lbl_desc" : "Description",
+   "@lbl_desc":{
+      "description": "Description"
+   },
+   "lbl_intrestes_viewers" : "Intrested Viewers",
+   "@lbl_intrestes_viewers":{
+      "description": "Intrested Viewers"
+   },
+   "btn_buy_tickets" : "Buy Ticket(s)",
+   "@btn_buy_tickets":{
+      "description": "Buy Ticket(s)"
+   },
+   "lbl_hint_chat_type_msg" : "Type Message",
+   "@lbl_hint_chat_type_msg":{
+      "description": "Type Message"
+   },
+   "lbl_dating_matches" : "Dating Matches",
+   "@lbl_dating_matches":{
+      "description": "Dating Matches"
+   },
+   "lbl_check_out_list_of_matches_keep_enjoying" : "Check out lists of matches & keep enjoing",
+   "@lbl_check_out_list_of_matches_keep_enjoying":{
+      "description": "Check out lists of matches & keep enjoing"
+   },
+   "lbl_tab_you_likes" : "You Liked",
+   "@lbl_tab_you_likes":{
+      "description": "You Liked"
+   },
+   "lbl_tab_views" : "Views",
+   "@lbl_tab_views":{
+      "description": "Views"
+   },
+   "lbl_filter_options" : "Filter Options",
+   "@lbl_filter_options":{
+      "description": "Filter Options"
+   },
+   "lbl_filter_options_subtitle" : "Manage and set your preferances to find the best matches for you, keep enjoying!",
+   "@lbl_filter_options_subtitle":{
+      "description": "Manage and set your preferances to find the best matches for you, keep enjoying!"
+   },
+   "lbl_here_to" : "Here to",
+   "@lbl_here_to":{
+      "description": "Here to"
+   },
+   "lbl_want_to_meet" : "Want to Meet",
+   "@lbl_want_to_meet":{
+      "description": "Want to meet"
+   },
+   "lbl_prefer_age_range" : "Prefer Age Range",
+   "@lbl_prefer_age_range":{
+      "description": "Prefer Age Range"
+   },
+   "lbl_prefer_language" : "Prefer Language(s)",
+   "@lbl_prefer_language":{
+      "description": "Prefer Language(s)"
+   },
+   "lbl_location" : "Location",
+   "@lbl_location":{
+      "description": "Location"
+   },
+   "lbl_distance_range" : "Distance Range",
+   "@lbl_distance_range":{
+      "description": "Distance Range"
+   },
+   "lbl_advance_filter_options" : "Advance Filter Options",
+   "@lbl_advance_filter_options":{
+      "description": "Advance Filter Options"
+   },
+   "btn_apply_filters" : "Apply Filters",
+   "@btn_apply_filters":{
+      "description": "Apply Filters"
+   },
+   "lbl_hello_friends" : "Hello Friends!",
+   "@lbl_hello_friends":{
+      "description": "Hello Friends!"
+   },
+   "lbl_tab_pictures" : "Pictures",
+   "@lbl_tab_pictures":{
+      "description": "Pictures"
+   },
+   "lbl_tab_videos" : "Videos",
+   "@lbl_tab_videos":{
+      "description": "Videos"
+   },
+   "lbl_tab_Bio" : "Bio",
+   "@lbl_tab_Bio":{
+      "description": "Bio"
+   },
+   "lbl_tab_more" : "More",
+   "@lbl_tab_more":{
+      "description": "More"
+   },
+   "lbl_intrests" : "Intrests",
+   "@lbl_intrests":{
+      "description": "Intrests"
+   },
+   "lbl_get_started" : "Get Started",
+   "@lbl_get_started":{
+      "description": "Get Started"
+   },
+   "lbl_likes_intrets" : "Likes, Intrests",
+   "@lbl_likes_intrets":{
+      "description": "Likes, Intrests"
+   },
+   "lbl_likes_intrets_subtitle" : "Share your likes & possion with others",
+   "@lbl_likes_intrets_subtitle":{
+      "description": "Share your likes & possion with others"
+   },
+   "lbl_load_more" : "Load More",
+   "@lbl_load_more":{
+      "description": "Load More"
+   },
+   "btn_continue" : "Continue",
+   "@btn_continue":{
+      "description": "Continue"
+   },
+   "btn_skip" : "Skip",
+   "@btn_skip":{
+      "description": "Skip"
+   },
+   "lbl_location_subtitle1" : "Let the app locate you to provide best",
+   "@lbl_location_subtitle":{
+      "description": "Let the app locate you to provide best"
+   },
+   "lbl_location_subtitle2" : "searched results around you",
+   "@lbl_location_subtitle2":{
+      "description": "searched results around you"
+   },
+   "lbl_current_location" : "Current Location",
+   "@lbl_current_location":{
+      "description": "Current Location"
+   },
+   "lbl_search_location_hint" : "Search New Location",
+   "@lbl_search_location_hint":{
+      "description": "Search New Location"
+   },
+   "lbl_powered_by" : "powered by",
+   "@lbl_powered_by":{
+      "description": "powered by"
+   },
+   "lbl_login" : "Login",
+   "@lbl_login":{
+      "description": "Login"
+   },
+   "lbl_login_subtitle1" : "Please enter your valid mobile number.",
+   "@lbl_login_subtitle1":{
+      "description": "Please enter your valid mobile number."
+   },
+   "lbl_login_subtitle2" : "We will send you a 4-digit code to verify",
+   "@lbl_login_subtitle2":{
+      "description": "We will send you a 4-digit code to verify"
+   },
+   "btn_submit" : "Submit",
+   "@btn_submit":{
+      "description": "Submit"
+   },
+   "lbl_or" : "OR",
+   "@lbl_or":{
+      "description": "OR"
+   },
+   "lbl_login_using" : "Login Using",
+   "@lbl_login_using":{
+      "description": "Login Using"
+   },
+   "lbl_short_bio" : "Short Bio",
+   "@lbl_short_bio":{
+      "description": "Short Bio"
+   },
+   "lbl_tab_mybio" : "My Bio",
+   "@lbl_tab_mybio":{
+      "description": "My Bio"
+   },
+   "lbl_notifications" : "Notifications",
+   "@lbl_notifications":{
+      "description": "Notifications"
+   },
+   "lbl_notifications_subtitle" : "Check notifications, respond & keep dating",
+   "@lbl_notifications_subtitle":{
+      "description": "Check notifications, respond & keep dating"
+   },
+   "lbl_payment" : "Payments",
+   "@lbl_payment":{
+      "description": "Payments"
+   },
+   "lbl_payment_subtitle1" : "Complete Your Payment to enjoy the most",
+   "@lbl_payment_subtitle1":{
+      "description": "Complete Your Payment to enjoy the most"
+   },
+   "lbl_payment_subtitle2" : "Saved Payment options",
+   "@lbl_payment_subtitle2":{
+      "description": "Saved Payment options"
+   },
+   "lbl_add_new_payment_options" : "Add New Payment Option",
+   "@lbl_add_new_payment_options":{
+      "description": "Add New Payment Option"
+   },
+   "btn_pay_now" : "Pay Now",
+   "@btn_pay_now":{
+      "description": "Pay Now"
+   },
+   "lbl_plan_dating" : "Plan Dating",
+   "@lbl_plan_dating":{
+      "description": "Plan Dating"
+   },
+   "lbl_plan_dating_subtitle" : "Reserve seat, place, book tickets etc to make your dating even more exciting..",
+   "@lbl_plan_dating_subtitle":{
+      "description": "Reserve seat, place, book tickets etc to make your dating even more exciting.."
+   },
+   "lbl_tab_popular" : "Popular",
+   "@lbl_tab_popular":{
+      "description": "Popular"
+   },
+   "lbl_tab_events" : "Events",
+   "@lbl_tab_events":{
+      "description": "Events"
+   },
+   "lbl_tab_parties" : "Parties",
+   "@lbl_tab_parties":{
+      "description": "Parties"
+   },
+   "lbl_tab_festivals" : "Festivals",
+   "@lbl_tab_festivals":{
+      "description": "Festivals"
+   },
+   "lbl_profile_details" : "Profile Details",
+   "@lbl_profile_details":{
+      "description": "Profile Details"
+   },
+   "lbl_profile_details_subtitle" : "Fill up the following details",
+   "@lbl_profile_details_subtitle":{
+      "description": "Fill up the following details"
+   },
+   "lbl_first_name_hint" : "First Name",
+   "@lbl_first_name_hint":{
+      "description": "First Name"
+   },
+   "lbl_last_name_hint" : "Last Name",
+   "@lbl_last_name_hint":{
+      "description": "Last Name"
+   },
+   "lbl_dob_hint" : "DOB",
+   "@lbl_dob_hint":{
+      "description": "DOB"
+   },
+   "lbl_gender_hint" : "Select Gender",
+   "@lbl_gender_hint":{
+      "description": "Select Gender"
+   },
+   "lbl_reward_dating" : "dating",
+   "@lbl_reward_dating":{
+      "description": "dating"
+   },
+   "lbl_reward_get_boost" : "Get boosts to increase your matches!",
+   "@lbl_reward_get_boost":{
+      "description": "Get boosts to increase your matches!"
+   },
+   "btn_boost_me" : "BOOST ME",
+   "@btn_boost_me":{
+      "description": "BOOST ME"
+   },
+   "lbl_plan_select" : "For Best Access",
+   "@btn_plan_select":{
+      "description": "For Best Access"
+   },
+   "lbl_plan_select_subtitle1" : "Subscribe a Plan",
+   "@btn_plan_select_subtitle1":{
+      "description": "Subscribe a Plan"
+   },
+   "lbl_plan_select_subtitle2" : "Top features you will get",
+   "@btn_plan_select_subtitle2":{
+      "description": "Top features you will get"
+   },
+   "lbl_select_your_plan" : "Select Your Plan",
+   "@lbl_select_your_plan":{
+      "description": "Select Your Plan"
+   },
+   "lbl_settings" : "Settings",
+   "@lbl_settings":{
+      "description": "Settings"
+   },
+   "lbl_settings_subtitle" : "Manage your settings for best app use",
+   "@lbl_settings_subtitle":{
+      "description": "Manage your settings for best app use"
+   },
+   "lbl_account" : "Account",
+   "@lbl_account":{
+      "description": "Account"
+   },
+   "lbl_likes_likes" : "Likes & Liked",
+   "@lbl_likes_likes":{
+      "description": "Likes & Liked"
+   },
+   "lbl_subscription" : "Manage Subscriptions",
+   "@lbl_subscription":{
+      "description": "Manage Subscriptions"
+   },
+   "lbl_dating_rewards" : "Dating Rewards",
+   "@lbl_dating_rewards":{
+      "description": "Dating Rewards"
+   },
+   "lbl_msg_options" : "Message Options",
+   "@lbl_msg_options":{
+      "description": "Message Options"
+   },
+  "lbl_manage_matches" : "Manage Matches",
+   "@lbl_manage_matches":{
+      "description": "Manage Matches"
+   },
+   "lbl_privacy_options" : "Privacy Options",
+   "@lbl_privacy_options":{
+      "description": "Privacy Options"
+   },
+   "lbl_delete_account" : "Delete Account",
+   "@lbl_delete_account":{
+      "description": "Delete Account"
+   },
+   "lbl_mode" : "Mode",
+   "@lbl_mode":{
+      "description": "Mode"
+   },
+   "lbl_safety" : "Safety",
+   "@lbl_safety":{
+      "description": "Safety"
+   },
+   "lbl_help_centre" : "Help Centre",
+   "@lbl_help_centre":{
+      "description": "Help Centre"
+   },
+   "lbl_terms_cond" : "Terms & Conditions",
+   "@lbl_terms_cond":{
+      "description": "Terms & Conditions"
+   },
+   "lbl_policy" : "Privacy Policy",
+   "@lbl_policy":{
+      "description": "Privacy Policy"
+   },
+   "lbl_congrats" : "Congrats!",
+   "@lbl_congrats":{
+      "description": "Congrats!"
+   },
+   "lbl_its_match" : "Its a match!",
+   "@lbl_its_match":{
+      "description": "Its a match!"
+   },
+   "lbl_coversation" : "Start Coversation",
+   "@lbl_coversation":{
+      "description": "Start Coversation"
+   },
+   "lbl_keep_dating" : "Keep Dating",
+   "@lbl_keep_dating":{
+      "description": "Keep Dating"
+   },
+   "lbl_online_dating_app" : "Online Dating App",
+   "@lbl_online_dating_app":{
+      "description": "Online Dating App"
+   },
+   "lbl_start_dating_subtitle1" : "Find Your",
+   "@lbl_start_dating_subtitle1":{
+      "description": "Find Your"
+   },
+   "lbl_start_dating_subtitle2" : "Best Match",
+   "@lbl_start_dating_subtitle2":{
+      "description": "Best Match"
+   },
+   "lbl_start_dating_subtitle3" : "Wanna know how the app works?",
+   "@lbl_start_dating_subtitle3":{
+      "description": "Wanna know how the app works?"
+   },
+   "lbl_play_video" : "Play the Video",
+   "@lbl_play_video":{
+      "description": "Play the Video"
+   },
+   "lbl_start_dating" : "Start Dating",
+   "@lbl_start_dating":{
+      "description": "Start Dating"
+   },
+   "lbl_be_patient" : "Be Patient",
+   "@lbl_be_patient":{
+      "description": "Be Patient"
+   },
+   "lbl_dont_loose" : "Dont loose heart, keep browsing to",
+   "@lbl_dont_loose":{
+      "description": "Dont loose heart, keep browsing to"
+   },
+   "lbl_find_your_best" : "find your best match",
+   "@lbl_find_your_best":{
+      "description": "find your best match"
+   },
+   "lbl_start_swipping" : "Start Swiping",
+   "@lbl_start_swipping":{
+      "description": "Start Swiping"
+   },
+   "lbl_upload_id" : "Upload ID",
+   "@lbl_upload_id":{
+      "description": "Upload ID"
+   },
+   "lbl_upload_doc" : "Upload Document",
+   "@lbl_upload_doc":{
+      "description": "Upload Document"
+   },
+   "lbl_verify" : "Verify",
+   "@lbl_verify":{
+      "description": "Verify"
+   },
+   "lbl_4_digit_entre" : "Please enter the 4-digit code",
+   "@lbl_4_digit_entre":{
+      "description": "Please enter the 4-digit code"
+   },
+   "lbl_sent_to_num" : "sent to your number",
+   "@lbl_sent_to_num":{
+      "description": "sent to your number"
+   },
+   "lbl_resend_otp" : "Resend OTP",
+   "@lbl_resend_otp":{
+      "description": "Resend OTP"
+   },
+   "btn_view_plan" : "View Plans",
+   "@btn_view_plan":{
+      "description": "View Plans"
+   },
+   "lbl_hello_user" : "Hello User",
+   "@lbl_hello_user":{
+      "description": "Hello User"
+   },
+   "lbl_reply_hint" : "Reply",
+   "@lbl_reply_hint":{
+      "description": "Reply"
+   },
+   "lbl_lang" : "Languages",
+   "@lbl_lang":{
+      "description": "Languages"
+   }
+}
