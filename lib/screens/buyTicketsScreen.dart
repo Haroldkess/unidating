@@ -4,11 +4,11 @@ import 'package:uni_dating/screens/paymentScreen.dart';
 import 'package:uni_dating/screens/planDatingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BuyTicketsScreen extends BaseRoute {
-  BuyTicketsScreen({a, o}) : super(a: a, o: o, r: 'BuyTicketsScreen');
+  final String? currentUserId;
+  BuyTicketsScreen({a, o,this.currentUserId}) : super(a: a, o: o, r: 'BuyTicketsScreen');
   @override
   _BuyTicketsScreenState createState() => _BuyTicketsScreenState();
 }
@@ -171,7 +171,7 @@ class _BuyTicketsScreenState extends BaseRouteState {
                       Padding(
                         padding: g.isRTL ? const EdgeInsets.only(right: 20, top: 30) : const EdgeInsets.only(left: 20, top: 30),
                         child: Text(
-                          AppLocalizations.of(context)!.lbl_desc,
+                          "Description",
                           style: Theme.of(context).primaryTextTheme.headline3,
                         ),
                       ),
@@ -210,7 +210,7 @@ class _BuyTicketsScreenState extends BaseRouteState {
                       Padding(
                         padding: g.isRTL ? const EdgeInsets.only(right: 20, top: 20) : const EdgeInsets.only(left: 20, top: 20),
                         child: Text(
-                          AppLocalizations.of(context)!.lbl_intrestes_viewers,
+                          "Interested Viewers",
                           style: Theme.of(context).primaryTextTheme.headline3,
                         ),
                       ),
@@ -323,13 +323,14 @@ class _BuyTicketsScreenState extends BaseRouteState {
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                                     builder: (context) => PaymentScreen(
+                                      currentUserId: widget.currentUserId,
                                           screenId: 1,
                                           a: widget.analytics,
                                           o: widget.observer,
                                         )));
                               },
                               child: Text(
-                                AppLocalizations.of(context)!.btn_buy_tickets,
+                                "Buy Ticket(s)",
                                 style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                                   MaterialState.pressed,
                                 }),
@@ -383,6 +384,7 @@ class _BuyTicketsScreenState extends BaseRouteState {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => PlanDatingScreen(
+                      currentUserId: widget.currentUserId,
                           a: widget.analytics,
                           o: widget.observer,
                         )));

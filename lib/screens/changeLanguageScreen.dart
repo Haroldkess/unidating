@@ -5,7 +5,6 @@ import 'package:uni_dating/provider/local_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangeLanguageScreen extends BaseRoute {
   ChangeLanguageScreen({a, o}) : super(a: a, o: o, r: 'ChangeLanguageScreen');
@@ -19,7 +18,7 @@ class _ChangeLanguageScreenState extends BaseRouteState {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LocaleProvider>(context);
-    var locale = provider.locale ?? Locale('en');
+    var locale = provider.locale != null ? Locale('en') : Locale('en') ;
     return SafeArea(
       child: WillPopScope(
         onWillPop: () {
@@ -121,7 +120,7 @@ class _ChangeLanguageScreenState extends BaseRouteState {
               },
             ),
             Text(
-              AppLocalizations.of(context)!.lbl_lang,
+              "AppLocalizations.of(context)!.lbl_lang",
               style: Theme.of(context).primaryTextTheme.subtitle2,
             )
           ],

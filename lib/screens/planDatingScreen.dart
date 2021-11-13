@@ -4,11 +4,11 @@ import 'package:uni_dating/screens/buyTicketsScreen.dart';
 import 'package:uni_dating/screens/datingMatchingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PlanDatingScreen extends BaseRoute {
-  PlanDatingScreen({a, o}) : super(a: a, o: o, r: 'PlanDatingScreen');
+  final String? currentUserId;
+  PlanDatingScreen({a, o,this.currentUserId}) : super(a: a, o: o, r: 'PlanDatingScreen');
 
   @override
   _PlanDatingScreenState createState() => _PlanDatingScreenState();
@@ -40,6 +40,7 @@ class _PlanDatingScreenState extends BaseRouteState {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => DatingMatchesScreen(
+                      currentUserId: widget.currentUserId,
                           a: widget.analytics,
                           o: widget.observer,
                         )));
@@ -57,14 +58,14 @@ class _PlanDatingScreenState extends BaseRouteState {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        AppLocalizations.of(context)!.lbl_plan_dating,
+                        "Plan Dating",
                         style: Theme.of(context).primaryTextTheme.headline1,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Text(
-                        AppLocalizations.of(context)!.lbl_plan_dating_subtitle,
+                        "Reserve seat, place, book tickets etc to make your dating even more exciting..",
                         style: Theme.of(context).primaryTextTheme.subtitle2,
                       ),
                     ),
@@ -92,7 +93,7 @@ class _PlanDatingScreenState extends BaseRouteState {
                           cursorColor: Colors.white,
                           decoration: InputDecoration(
                             contentPadding: g.isRTL ? EdgeInsets.only(right: 22, top: 15) : EdgeInsets.only(left: 22, top: 15),
-                            hintText: AppLocalizations.of(context)!.hint_Searchlbl_Search_Message_match,
+                            hintText: "Search Message,Match",
                             hintStyle: Theme.of(context).primaryTextTheme.subtitle2,
                             suffixIcon: Padding(
                               padding: const EdgeInsets.only(right: 8),
@@ -132,13 +133,13 @@ class _PlanDatingScreenState extends BaseRouteState {
                                       ).createShader(bounds);
                                     },
                                     child: Text(
-                                      AppLocalizations.of(context)!.lbl_tab_popular,
+                                      "Popular",
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
                                 )
                               : Text(
-                                  AppLocalizations.of(context)!.lbl_tab_popular,
+                                  "Popular",
                                   style: TextStyle(fontSize: 16),
                                 ),
                           _tabController.index == 1
@@ -153,13 +154,13 @@ class _PlanDatingScreenState extends BaseRouteState {
                                       ).createShader(bounds);
                                     },
                                     child: Text(
-                                      AppLocalizations.of(context)!.lbl_tab_events,
+                                      "Events",
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
                                 )
                               : Text(
-                                  AppLocalizations.of(context)!.lbl_tab_events,
+                                  "Events",
                                   style: TextStyle(fontSize: 16),
                                 ),
                           _tabController.index == 2
@@ -174,13 +175,13 @@ class _PlanDatingScreenState extends BaseRouteState {
                                       ).createShader(bounds);
                                     },
                                     child: Text(
-                                      AppLocalizations.of(context)!.lbl_tab_parties,
+                                      "Parties",
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
                                 )
                               : Text(
-                                  AppLocalizations.of(context)!.lbl_tab_parties,
+                                  "Parties",
                                   style: TextStyle(fontSize: 16),
                                 ),
                           _tabController.index == 3
@@ -195,13 +196,13 @@ class _PlanDatingScreenState extends BaseRouteState {
                                       ).createShader(bounds);
                                     },
                                     child: Text(
-                                      AppLocalizations.of(context)!.lbl_tab_parties,
+                                      "Parties",
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
                                 )
                               : Text(
-                                  AppLocalizations.of(context)!.lbl_tab_parties,
+                                  "Parties",
                                   style: TextStyle(fontSize: 16),
                                 ),
                         ],
@@ -218,6 +219,7 @@ class _PlanDatingScreenState extends BaseRouteState {
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                                       builder: (context) => BuyTicketsScreen(
+                                        currentUserId: widget.currentUserId,
                                             a: widget.analytics,
                                             o: widget.observer,
                                           )));
@@ -342,6 +344,7 @@ class _PlanDatingScreenState extends BaseRouteState {
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                                       builder: (context) => BuyTicketsScreen(
+                                        currentUserId: widget.currentUserId,
                                             a: widget.analytics,
                                             o: widget.observer,
                                           )));
@@ -466,6 +469,7 @@ class _PlanDatingScreenState extends BaseRouteState {
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                                       builder: (context) => BuyTicketsScreen(
+                                        currentUserId: widget.currentUserId,
                                             a: widget.analytics,
                                             o: widget.observer,
                                           )));
@@ -590,6 +594,7 @@ class _PlanDatingScreenState extends BaseRouteState {
                                 onTap: () {
                                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                                       builder: (context) => BuyTicketsScreen(
+                                        currentUserId: widget.currentUserId,
                                             a: widget.analytics,
                                             o: widget.observer,
                                           )));

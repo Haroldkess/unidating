@@ -1,13 +1,15 @@
+import 'package:uni_dating/model/user_model.dart';
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:uni_dating/screens/chatScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class StartConversionScreen extends BaseRoute {
-  StartConversionScreen({a, o}) : super(a: a, o: o, r: 'StartConversionScreen');
+  final String? currentUserId;
+  final User2? matchedUserData;
+  StartConversionScreen({a, o,this.currentUserId, this.matchedUserData}) : super(a: a, o: o, r: 'StartConversionScreen');
   @override
   _StartConversionScreenState createState() => _StartConversionScreenState();
 }
@@ -41,15 +43,15 @@ class _StartConversionScreenState extends BaseRouteState {
                     g.isDarkModeEnable ? 'assets/images/match_new_remove.png' : 'assets/images/match_new_remove.png',
                     fit: BoxFit.fitWidth,
                   ),
-                  Text(AppLocalizations.of(context)!.lbl_congrats, style: Theme.of(context).primaryTextTheme.headline1),
+                  Text("Congrats", style: Theme.of(context).primaryTextTheme.headline1),
                   Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_its_match,
+                      "Its a match!",
                       style: Theme.of(context).primaryTextTheme.subtitle2,
                     ),
                   ),
-                  Text('Belle and You both Liked each other', style: Theme.of(context).primaryTextTheme.subtitle2),
+                  Text('${widget.matchedUserData!.name} and You both Liked each other', style: Theme.of(context).primaryTextTheme.subtitle2),
                   InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -57,8 +59,10 @@ class _StartConversionScreenState extends BaseRouteState {
                     overlayColor: MaterialStateProperty.all(Colors.transparent),
                     highlightColor: Colors.transparent,
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => ChatScreen(
+                            currentUserId: widget.currentUserId,
+                                matchedUserData: widget.matchedUserData,
                                 a: widget.analytics,
                                 o: widget.observer,
                               )));
@@ -81,7 +85,7 @@ class _StartConversionScreenState extends BaseRouteState {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 15),
                           child: Text(
-                            AppLocalizations.of(context)!.lbl_coversation,
+                            "Start Conversation",
                             style: TextStyle(
                               color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
                               fontWeight: FontWeight.w600,
@@ -115,7 +119,7 @@ class _StartConversionScreenState extends BaseRouteState {
                               Navigator.of(context).pop();
                             },
                             child: Text(
-                              AppLocalizations.of(context)!.lbl_keep_dating,
+                              "Keep Dating",
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                           ),

@@ -4,12 +4,13 @@ import 'package:uni_dating/screens/datingMatchingScreen.dart';
 import 'package:uni_dating/screens/selectPlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PaymentScreen extends BaseRoute {
   final int screenId;
-  PaymentScreen({a, o, required this.screenId}) : super(a: a, o: o, r: 'PaymentScreen');
+  final String? currentUserId;
+
+  PaymentScreen({a, o, required this.screenId,this.currentUserId}) : super(a: a, o: o, r: 'PaymentScreen');
   @override
   _PaymentScreenState createState() => _PaymentScreenState(this.screenId);
 }
@@ -41,6 +42,7 @@ class _PaymentScreenState extends BaseRouteState {
             onPressed: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => SelectPlanScreen(
+                    currentUserId: widget.currentUserId,
                         a: widget.analytics,
                         o: widget.observer,
                       )));
@@ -57,20 +59,20 @@ class _PaymentScreenState extends BaseRouteState {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.lbl_payment,
+                    "Payments",
                     style: Theme.of(context).primaryTextTheme.headline1,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_payment_subtitle1,
+                      "Complete Your Payment to enjoy the most",
                       style: Theme.of(context).primaryTextTheme.subtitle2,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_payment_subtitle2,
+                      "Saved Payment options",
                       style: Theme.of(context).primaryTextTheme.headline3,
                     ),
                   ),
@@ -256,7 +258,7 @@ class _PaymentScreenState extends BaseRouteState {
                         ).createShader(bounds);
                       },
                       child: Text(
-                        AppLocalizations.of(context)!.lbl_add_new_payment_options,
+                        "AppLocalizations.of(context)!.lbl_add_new_payment_options",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -277,15 +279,15 @@ class _PaymentScreenState extends BaseRouteState {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          screenId == 2
-                              ? Navigator.of(context).pop()
-                              : Navigator.of(context).push(MaterialPageRoute(
+
+                          Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => DatingMatchesScreen(
+                                    currentUserId: widget.currentUserId,
                                         a: widget.analytics,
                                         o: widget.observer,
                                       )));
                         },
-                        child: Text(AppLocalizations.of(context)!.btn_pay_now,
+                        child: Text("Pay Now",
                             style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                               MaterialState.pressed,
                             })),

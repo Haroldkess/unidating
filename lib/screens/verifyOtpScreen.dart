@@ -3,7 +3,6 @@ import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:uni_dating/screens/profileDetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VerifyOtpScreen extends BaseRoute {
@@ -55,16 +54,16 @@ class _VerifyOtpScreenState extends BaseRouteState {
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_verify,
+                      "AppLocalizations.of(context)!.lbl_verify",
                       style: Theme.of(context).primaryTextTheme.headline1,
                     ),
                   ),
                   Text(
-                    AppLocalizations.of(context)!.lbl_4_digit_entre,
+                    "AppLocalizations.of(context)!.lbl_4_digit_entre",
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                   Text(
-                    AppLocalizations.of(context)!.lbl_sent_to_num,
+                   " AppLocalizations.of(context)!.lbl_sent_to_num",
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                   Padding(
@@ -227,7 +226,7 @@ class _VerifyOtpScreenState extends BaseRouteState {
                                 )));
                       },
                       child: Text(
-                        AppLocalizations.of(context)!.btn_submit,
+                       " AppLocalizations.of(context)!.btn_submit",
                         style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                           MaterialState.pressed,
                         }),
@@ -246,7 +245,7 @@ class _VerifyOtpScreenState extends BaseRouteState {
                         ).createShader(bounds);
                       },
                       child: Text(
-                        AppLocalizations.of(context)!.lbl_resend_otp,
+                        "AppLocalizations.of(context)!.lbl_resend_otp",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                       ),
                     ),

@@ -1,9 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:uni_dating/models/businessLayer/base.dart';
+import 'package:uni_dating/model/user_model.dart';
+
 
 class BaseRoute extends Base {
-  BaseRoute({a, o, r}) : super(analytics: a , observer: o , routeName: 'BaseRoute');
+  final User? user;
+  final String? currentUserId;
+  BaseRoute({a, o, r, this.user, this.currentUserId}) : super(analytics: a , observer: o , routeName: 'BaseRoute' );
 
   @override
   BaseRouteState createState() => BaseRouteState();

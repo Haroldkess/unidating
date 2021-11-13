@@ -4,7 +4,6 @@ import 'package:uni_dating/widgets/bottomNavigationBarWidgetDark.dart';
 import 'package:uni_dating/widgets/bottomNavigationBarWidgetLight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LocationScreen extends BaseRoute {
@@ -51,21 +50,21 @@ class _LocationScreenState extends BaseRouteState {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(child: SizedBox()),
-                  Text(AppLocalizations.of(context)!.lbl_location, style: Theme.of(context).primaryTextTheme.headline1),
+                  Text("Location", style: Theme.of(context).primaryTextTheme.headline1),
                   Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_location_subtitle1,
+                      "Let the app locate you to provide best",
                       style: Theme.of(context).primaryTextTheme.subtitle2,
                     ),
                   ),
-                  Text(AppLocalizations.of(context)!.lbl_location_subtitle2, style: Theme.of(context).primaryTextTheme.subtitle2),
+                  Text("searched results around you", style: Theme.of(context).primaryTextTheme.subtitle2),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 30.0),
                       child: Text(
-                        AppLocalizations.of(context)!.lbl_current_location,
+                        "Current Location",
                         style: Theme.of(context).accentTextTheme.headline5,
                       ),
                     ),
@@ -139,7 +138,7 @@ class _LocationScreenState extends BaseRouteState {
                           ),
                           contentPadding: g.isRTL ? EdgeInsets.only(right: 20, top: 15) : EdgeInsets.only(left: 20, top: 15),
                           hintStyle: Theme.of(context).primaryTextTheme.subtitle2,
-                          hintText: AppLocalizations.of(context)!.lbl_search_location_hint,
+                          hintText: "Search New Location",
                         ),
                       ),
                     ),
@@ -163,18 +162,20 @@ class _LocationScreenState extends BaseRouteState {
                           g.isDarkModeEnable
                               ? Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => BottomNavigationWidgetDark(
+                                    currentUserId: widget.currentUserId,
                                         currentIndex: 0,
                                         a: widget.analytics,
                                         o: widget.observer,
                                       )))
                               : Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => BottomNavigationWidgetLight(
+                                    currentUserId: widget.currentUserId,
                                         currentIndex: 0,
                                         a: widget.analytics,
                                         o: widget.observer,
                                       )));
                         },
-                        child: Text(AppLocalizations.of(context)!.btn_continue,
+                        child: Text("Continue",
                             style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                               MaterialState.pressed,
                             })),
@@ -190,7 +191,7 @@ class _LocationScreenState extends BaseRouteState {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            AppLocalizations.of(context)!.lbl_powered_by,
+                            "powered by",
                             style: Theme.of(context).primaryTextTheme.subtitle2,
                           ),
                           Padding(

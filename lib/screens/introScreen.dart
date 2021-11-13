@@ -3,11 +3,11 @@ import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:uni_dating/screens/startDatingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class IntroScreen extends BaseRoute {
-  IntroScreen({a, o}) : super(a: a, o: o, r: 'IntroScreen');
+  final String? currentUserId;
+  IntroScreen({a, o,this.currentUserId}) : super(a: a, o: o, r: 'IntroScreen');
   @override
   _IntroScreenState createState() => _IntroScreenState();
 }
@@ -18,6 +18,7 @@ class _IntroScreenState extends BaseRouteState {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: Scaffold(
       key: _scaffoldKey,
@@ -41,8 +42,9 @@ class _IntroScreenState extends BaseRouteState {
                 overlayColor: MaterialStateProperty.all(Colors.transparent),
                 highlightColor: Colors.transparent,
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => StartDatingScreen(
+                        currentUserId: widget.currentUserId,
                             a: widget.analytics,
                             o: widget.observer,
                           )));
@@ -62,7 +64,7 @@ class _IntroScreenState extends BaseRouteState {
                           ).createShader(bounds);
                         },
                         child: Text(
-                          AppLocalizations.of(context)!.lbl_get_started,
+                          "Get Started",
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ),

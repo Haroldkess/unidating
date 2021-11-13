@@ -2,7 +2,6 @@ import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StartSwippingScreen extends BaseRoute {
   StartSwippingScreen({a, o}) : super(a: a, o: o, r: 'StartSwippingScreen');
@@ -44,18 +43,18 @@ class _StartSwippingScreenState extends BaseRouteState {
                   ),
                 ),
                 Text(
-                  AppLocalizations.of(context)!.lbl_be_patient,
+                  "Be Patient",
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Text(
-                    AppLocalizations.of(context)!.lbl_dont_loose,
+                    "Dont loose heart, keep browsing to",
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                 ),
                 Text(
-                  AppLocalizations.of(context)!.lbl_find_your_best,
+                  "find your best match",
                   style: Theme.of(context).primaryTextTheme.subtitle2,
                 ),
                 InkWell(
@@ -79,7 +78,7 @@ class _StartSwippingScreenState extends BaseRouteState {
                           ).createShader(bounds);
                         },
                         child: Text(
-                          AppLocalizations.of(context)!.lbl_start_swipping,
+                          "Start Swiping",
                           style: TextStyle(fontSize: 22),
                         )),
                   ),

@@ -2,13 +2,27 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uni_dating/model/user_model.dart';
+
 
 class Base extends StatefulWidget {
   final dynamic analytics;
   final dynamic observer;
   final String routeName;
+  final User? user;
+  final String? currentUserId;
+  final User2? matchedUserData;
+  final User2? datingUser;
+  final StatusPost? statusPost;
+  final User? thisProfileUser;
+  final List<String>? fromFilters;
+  final String? userStoryId;
 
-  Base({Key? key, this.analytics, this.observer, required this.routeName}) : super(key: key);
+
+  Base({Key? key, this.analytics, this.observer, required this.routeName,this.user,this.currentUserId,
+    this.matchedUserData,this.datingUser, this.statusPost,
+    this.userStoryId,
+  this.thisProfileUser,this.fromFilters}) : super(key: key);
 
   @override
   BaseState createState() => BaseState();

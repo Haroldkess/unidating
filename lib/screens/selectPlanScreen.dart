@@ -1,3 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_paystack_client/flutter_paystack_client.dart';
+import 'package:uni_dating/constant_firebase.dart';
+import 'package:uni_dating/model/user_model.dart';
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:uni_dating/screens/paymentScreen.dart';
@@ -5,19 +10,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectPlanScreen extends BaseRoute {
-  SelectPlanScreen({a, o}) : super(a: a, o: o, r: 'SelectPlanScreen');
+  final User? thisProfileUser;
+  final String? currentUserId;
+  SelectPlanScreen({a, o,this.currentUserId,this.thisProfileUser}) : super(a: a, o: o, r: 'SelectPlanScreen');
   @override
   _SelectPlanScreenState createState() => _SelectPlanScreenState();
 }
 
 class _SelectPlanScreenState extends BaseRouteState {
+  bool? starterX = false;
+  bool? proX = false;
+  bool? vetX = false;
+  DateTime _starterX = DateTime.now().add(Duration(days: 30));
+  DateTime? _proX = DateTime.now().add(Duration(days: 180));
+  DateTime? _vetX = DateTime.now().add(Duration(days: 360));
+
+  String _email = 'tlptechfund@gmail.com';
+  int _amount = 200;
+  String _message = '';
+
   _SelectPlanScreenState() : super();
 
-  @override
-  Widget build(BuildContext context) {
+
+  Widget ui (BuildContext context, AsyncSnapshot snapshot,AppPayment paymentAmount, )
+  {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -49,7 +67,7 @@ class _SelectPlanScreenState extends BaseRouteState {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_plan_select,
+                      "For Best Access",
                       style: Theme.of(context).primaryTextTheme.headline1,
                     ),
                   ),
@@ -59,7 +77,7 @@ class _SelectPlanScreenState extends BaseRouteState {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.lbl_plan_select_subtitle1,
+                          "Subscribe a Plan",
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                         Padding(
@@ -75,7 +93,7 @@ class _SelectPlanScreenState extends BaseRouteState {
                   Padding(
                     padding: const EdgeInsets.only(top: 25),
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_plan_select_subtitle2,
+                      "Top features you will get",
                       style: Theme.of(context).primaryTextTheme.headline3,
                     ),
                   ),
@@ -190,267 +208,290 @@ class _SelectPlanScreenState extends BaseRouteState {
                       style: Theme.of(context).primaryTextTheme.headline3,
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.all(1.5),
-                    height: 65,
-                    decoration: g.isDarkModeEnable
-                        ? BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: g.gradientColors,
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(35),
-                          )
-                        : null,
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        proX = false;
+                        vetX = false;
+                        starterX = true;
+                      });
+                    },
                     child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.all(1.5),
+                      height: 65,
                       decoration: BoxDecoration(
-                        color: g.isDarkModeEnable ? Color(0xFF140133) : Colors.white,
+                        gradient: LinearGradient(
+                          colors: (proX == false && starterX == true && vetX == false) ?  g.gradientColors: [Color(0xFFfFffFf), Color(0xFFfFffFf)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                         borderRadius: BorderRadius.circular(35),
                       ),
-                      alignment: Alignment.centerLeft,
-                      height: 65,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        title: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 20, right: 10),
-                              child: ShaderMask(
-                                blendMode: BlendMode.srcIn,
-                                shaderCallback: (Rect bounds) {
-                                  return LinearGradient(
-                                    colors: [Color(0xFFDFC6FE), Color(0xFFD369D4)],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ).createShader(bounds);
-                                },
-                                child: Icon(
-                                  Icons.star,
-                                  color: g.isDarkModeEnable ? Theme.of(context).iconTheme.color : Color(0xFFFF5A90),
-                                  size: 26,
+
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: g.isDarkModeEnable ? Color(0xFF140133) : Colors.white,
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        height: 65,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          title: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 10),
+                                child: ShaderMask(
+                                  blendMode: BlendMode.srcIn,
+                                  shaderCallback: (Rect bounds) {
+                                    return LinearGradient(
+                                      colors: [Color(0xFFDFC6FE), Color(0xFFD369D4)],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ).createShader(bounds);
+                                  },
+                                  child: Icon(
+                                    Icons.star,
+                                    color: g.isDarkModeEnable ? Theme.of(context).iconTheme.color : Color(0xFFFF5A90),
+                                    size: 26,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Column(
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Starter X',
+                                    style: Theme.of(context).primaryTextTheme.subtitle1,
+                                  ),
+                                  Text(
+                                    '1 Months',
+                                    style: Theme.of(context).primaryTextTheme.bodyText2,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          trailing: Padding(
+                            padding: g.isRTL ? const EdgeInsets.only(left: 20) : const EdgeInsets.only(right: 20),
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Starter X',
-                                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                                Icon(
+                                  Icons.attach_money,
+                                  color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
+                                  size: 18,
                                 ),
                                 Text(
-                                  '3 Months',
-                                  style: Theme.of(context).primaryTextTheme.bodyText2,
+                                  '29.99',
+                                  style: TextStyle(
+                                    color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
+                                  ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        trailing: Padding(
-                          padding: g.isRTL ? const EdgeInsets.only(left: 20) : const EdgeInsets.only(right: 20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.attach_money,
-                                color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
-                                size: 18,
-                              ),
-                              Text(
-                                '33.00',
-                                style: TextStyle(
-                                  color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.all(1.5),
-                    height: 65,
-                    decoration: g.isDarkModeEnable
-                        ? null
-                        : BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: g.gradientColors,
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(35),
-                          ),
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        proX = true;
+                        vetX = false;
+                        starterX = false;
+                      });
+                    },
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: g.isDarkModeEnable ? Colors.black : Colors.white,
-                        borderRadius: BorderRadius.circular(35),
-                        border: Border.all(
-                          color: Colors.white,
-                        ),
-                      ),
+                      margin: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.all(1.5),
                       height: 65,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        title: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 20, right: 10),
-                              child: ShaderMask(
-                                blendMode: BlendMode.srcIn,
-                                shaderCallback: (Rect bounds) {
-                                  return LinearGradient(
-                                    colors: [Color(0xFFDFC6FE), Color(0xFFD369D4)],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ).createShader(bounds);
-                                },
-                                child: Icon(
-                                  MdiIcons.diamond,
-                                  color: Theme.of(context).iconTheme.color,
-                                  size: 26,
+                      decoration:  BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: (proX == true && starterX == false && vetX == false) ?  g.gradientColors: [Color(0xFFfFffFf), Color(0xFFfFffFf)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(35),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: g.isDarkModeEnable ? Colors.black : Colors.white,
+                          borderRadius: BorderRadius.circular(35),
+                          border: Border.all(
+                            color: Colors.white,
+                          ),
+                        ),
+                        height: 65,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          title: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 10),
+                                child: ShaderMask(
+                                  blendMode: BlendMode.srcIn,
+                                  shaderCallback: (Rect bounds) {
+                                    return LinearGradient(
+                                      colors: [Color(0xFFDFC6FE), Color(0xFFD369D4)] ,
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ).createShader(bounds);
+                                  },
+                                  child: Icon(
+                                    MdiIcons.diamond,
+                                    color: Theme.of(context).iconTheme.color,
+                                    size: 26,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Column(
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Pro X',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: g.isDarkModeEnable ? Colors.white : Color(0xFF33196B),
+                                    ),
+                                  ),
+                                  Text(
+                                    '6 Months',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.purple,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          trailing: Padding(
+                            padding: g.isRTL ? const EdgeInsets.only(left: 20) : const EdgeInsets.only(right: 20),
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Pro Buddy',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: g.isDarkModeEnable ? Colors.white : Color(0xFF33196B),
-                                  ),
+                                Icon(
+                                  Icons.attach_money,
+                                  color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
+                                  size: 20,
                                 ),
                                 Text(
-                                  '6 Months',
+                                  '39.99',
                                   style: TextStyle(
-                                    fontSize: 10,
+                                    color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.purple,
                                   ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        trailing: Padding(
-                          padding: g.isRTL ? const EdgeInsets.only(left: 20) : const EdgeInsets.only(right: 20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.attach_money,
-                                color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
-                                size: 20,
-                              ),
-                              Text(
-                                '60.00',
-                                style: TextStyle(
-                                  color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    padding: EdgeInsets.all(1.5),
-                    height: 65,
-                    decoration: g.isDarkModeEnable
-                        ? BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: g.gradientColors,
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(35),
-                          )
-                        : null,
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        proX = false;
+                        vetX = true;
+                        starterX = false;
+                      });
+                    },
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: g.isDarkModeEnable ? Color(0xFF140133) : Colors.white,
-                        borderRadius: BorderRadius.circular(35),
-                      ),
+                      margin: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.all(1.5),
                       height: 65,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        title: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 20, right: 10),
-                              child: ShaderMask(
-                                blendMode: BlendMode.srcIn,
-                                shaderCallback: (Rect bounds) {
-                                  return LinearGradient(
-                                    colors: [Color(0xFFDFC6FE), Color(0xFFD369D4)],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ).createShader(bounds);
-                                },
-                                child: Icon(
-                                  MdiIcons.crown,
-                                  color: Theme.of(context).iconTheme.color,
-                                  size: 26,
+                      decoration:BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: (proX == false && starterX == false && vetX == true) ?  g.gradientColors: [Color(0xFFfFffFf), Color(0xFFfFffFf)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(35),
+                      )
+                      ,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: g.isDarkModeEnable ? Color(0xFF140133) : Colors.white,
+                          borderRadius: BorderRadius.circular(35),
+                        ),
+                        height: 65,
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          title: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 10),
+                                child: ShaderMask(
+                                  blendMode: BlendMode.srcIn,
+                                  shaderCallback: (Rect bounds) {
+                                    return LinearGradient(
+                                      colors: [Color(0xFFDFC6FE), Color(0xFFD369D4)],
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                    ).createShader(bounds);
+                                  },
+                                  child: Icon(
+                                    MdiIcons.crown,
+                                    color: Theme.of(context).iconTheme.color,
+                                    size: 26,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Column(
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Veteran X',
+                                    style: Theme.of(context).primaryTextTheme.subtitle1,
+                                  ),
+                                  Text(
+                                    '12 Months',
+                                    style: Theme.of(context).primaryTextTheme.bodyText2,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          trailing: Padding(
+                            padding: g.isRTL ? const EdgeInsets.only(left: 20) : const EdgeInsets.only(right: 20),
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Starter X',
-                                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                                Icon(
+                                  Icons.attach_money,
+                                  color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
+                                  size: 18,
                                 ),
                                 Text(
-                                  '3 Months',
-                                  style: Theme.of(context).primaryTextTheme.bodyText2,
+                                  '49.99',
+                                  style: TextStyle(
+                                    color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
+                                  ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                        trailing: Padding(
-                          padding: g.isRTL ? const EdgeInsets.only(left: 20) : const EdgeInsets.only(right: 20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.attach_money,
-                                color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
-                                size: 18,
-                              ),
-                              Text(
-                                '108.00',
-                                style: TextStyle(
-                                  color: g.isDarkModeEnable ? Colors.yellow[700] : Theme.of(context).primaryColorLight,
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       ),
@@ -471,16 +512,129 @@ class _SelectPlanScreenState extends BaseRouteState {
                         ),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (context) => PaymentScreen(
-                                    screenId: 2,
-                                    a: widget.analytics,
-                                    o: widget.observer,
-                                  )));
+
+                        onPressed: () async {
+                          if (paymentAmount.hidePayment == true) return;
+
+                          if (vetX == false && starterX == false && proX == false)
+                            {
+                              ScaffoldMessenger.of(
+                                  context)
+                                  .showSnackBar(
+                                  SnackBar(
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                        "Kindly select a plan"),
+                                    backgroundColor: Theme
+                                        .of(context)
+                                        .primaryColorLight,
+                                  ));
+
+                            }
+                          else{
+                            final charge = Charge()
+                              ..email = '${widget.thisProfileUser!.email}'
+                              ..amount = vetX == true ? (int.tryParse("${paymentAmount.veteranX!.toInt().toString()}")! *  100 ) * paymentAmount.rate! :
+                              starterX == true ? (int.tryParse("${paymentAmount.starterX!.toInt().toString()}")! *  100 ) * paymentAmount.rate!
+                                  : proX == true ? (int.tryParse("${paymentAmount.proX!.toInt().toString()}")! *  100 ) * paymentAmount.rate! :
+                              0
+                              ..reference = 'ref_${DateTime.now().millisecondsSinceEpoch}';
+                            final res =
+                            await PaystackClient.checkout(context, charge: charge);
+
+                            if(res.status == true || res.reference != null)
+                            {
+                              if (starterX == true)
+                              {
+                                usersRef.doc(widget.currentUserId).update({
+                                  'paid': true,
+                                }).then((_) {
+                                  FirebaseFirestore.instance.collection("paidUsers").doc(widget.currentUserId).set({
+                                    'paid': true,
+                                    'startDate': Timestamp.now().toDate().toLocal(),
+                                    'endDate': _starterX.toUtc().add(Duration(days: 30)),
+                                    'type': 'starterX'
+
+                                  });
+                                });
+
+                              }
+                              if (proX == true)
+                              {
+                                usersRef.doc(widget.currentUserId).update({
+                                  'paid': true,
+                                }).then((_) {
+                                  FirebaseFirestore.instance.collection("paidUsers").doc(widget.currentUserId).set({
+                                    'paid': true,
+                                    'startDate': Timestamp.now().toDate().toLocal(),
+                                    'endDate': _starterX.toUtc().add(Duration(days: 180)),
+                                    'type': 'proX'
+
+                                  });
+                                });
+
+                              }
+                              if (vetX == true)
+                              {
+                                usersRef.doc(widget.currentUserId).update({
+                                  'paid': true,
+                                }).then((_) {
+                                  FirebaseFirestore.instance.collection("paidUsers").doc(widget.currentUserId).set({
+                                    'paid': true,
+                                    'startDate': Timestamp.now().toDate().toLocal(),
+                                    'endDate': _starterX.toUtc().add(Duration(days: 365)),
+                                    'type': 'vetX'
+
+                                  });
+                                });
+
+                              }
+
+                            }
+
+
+                            if (res.status) {
+                              _message = 'Charge was successful. Ref: ${res.reference}';
+                              ScaffoldMessenger.of(
+                                  context)
+                                  .showSnackBar(
+                                  SnackBar(
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                        _message),
+                                    backgroundColor: Theme
+                                        .of(context)
+                                        .primaryColorLight,
+                                  ));
+
+                            } else {
+                              _message = 'Failed: ${res.message}';
+                              ScaffoldMessenger.of(
+                                  context)
+                                  .showSnackBar(
+                                  SnackBar(
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                        _message),
+                                    backgroundColor: Theme
+                                        .of(context)
+                                        .primaryColorLight,
+                                  ));
+                            }
+                            setState(() {});
+                          }
+
+
+
+                          // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          //     builder: (context) => PaymentScreen(
+                          //           screenId: 2,
+                          //           a: widget.analytics,
+                          //           o: widget.observer,
+                          //         )));
                         },
                         child: Text(
-                          AppLocalizations.of(context)!.btn_continue,
+                          "Continue",
                           style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                             MaterialState.pressed,
                           }),
@@ -498,7 +652,39 @@ class _SelectPlanScreenState extends BaseRouteState {
   }
 
   @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<DocumentSnapshot>(
+      future: pricingRef.doc("price1997").get(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ));
+        }
+        AppPayment _pay = AppPayment.fromDoc(snapshot.data);
+        return ui(context, snapshot, _pay);
+      },
+    );
+  }
+
+  String? key;
+Future <void> pubKey () async{
+
+await  pricingRef.doc('price1997').get().then((value) {
+  String  _data = value.data()!['key'];
+    setState(() {
+      key = _data;
+    });
+
+  });
+
+  await PaystackClient.initialize(key!);
+
+}
+  @override
   void initState() {
     super.initState();
+    pubKey();
   }
 }

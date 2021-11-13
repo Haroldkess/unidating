@@ -3,7 +3,6 @@ import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LikedAndLikesScreen extends BaseRoute {
   LikedAndLikesScreen({a, o}) : super(a: a, o: o, r: 'LikedAndLikesScreen');
@@ -41,14 +40,14 @@ class _LikedAndLikesScreenState extends BaseRouteState {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.lbl_likes_intrets,
+                      "Likes, Intrests",
                       textAlign: TextAlign.left,
                       style: Theme.of(context).primaryTextTheme.headline1,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        AppLocalizations.of(context)!.lbl_likes_intrets_subtitle,
+                        "Share your likes & possion with others",
                         textAlign: TextAlign.left,
                         style: Theme.of(context).primaryTextTheme.subtitle2,
                       ),
@@ -854,7 +853,7 @@ class _LikedAndLikesScreenState extends BaseRouteState {
                           ).createShader(bounds);
                         },
                         child: Text(
-                          AppLocalizations.of(context)!.lbl_load_more,
+                          "Load More",
                           style: TextStyle(fontSize: 20),
                         ),
                       ),

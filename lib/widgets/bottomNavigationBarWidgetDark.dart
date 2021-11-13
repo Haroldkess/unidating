@@ -1,3 +1,4 @@
+import 'package:uni_dating/constant_firebase.dart';
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/screens/addMessageScreen.dart';
 import 'package:uni_dating/screens/addStoryScreen.dart';
@@ -9,7 +10,9 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class BottomNavigationWidgetDark extends BaseRoute {
   final int currentIndex;
-  BottomNavigationWidgetDark({a, o, required this.currentIndex}) : super(a: a, o: o, r: 'BottomNavigationWidgetDark');
+  final String? currentUserId;
+  final List<String>? fromFilters;
+  BottomNavigationWidgetDark({a, o, required this.currentIndex, this.currentUserId,this.fromFilters}) : super(a: a, o: o, r: 'BottomNavigationWidgetDark');
   @override
   _BottomNavigationWidgetDarkState createState() => new _BottomNavigationWidgetDarkState(this.currentIndex);
 }
@@ -23,6 +26,10 @@ late  TabController _tabController;
   @override
   void dispose() {
     super.dispose();
+
+    usersRef.doc(widget.currentUserId).update({
+      'onlineOffline': false,
+    });
   }
 
   @override
@@ -153,6 +160,10 @@ late  TabController _tabController;
   @override
   void initState() {
     super.initState();
+
+    usersRef.doc(widget.currentUserId).update({
+      'onlineOffline': true,
+    });
     if (currentIndex != null) {
       setState(() {
         _currentIndex = currentIndex;
@@ -169,9 +180,18 @@ late  TabController _tabController;
   }
 
   List<Widget> _screens() => [
-        AddStoryScreen(a: widget.analytics, o: widget.observer),
-        AddYourStoryScreen(a: widget.analytics, o: widget.observer),
-        AddMessageScreen(a: widget.analytics, o: widget.observer),
-        MyProfileSceen(a: widget.analytics, o: widget.observer),
+        AddStoryScreen(
+            fromFilters: widget.fromFilters,
+          currentUserId: widget.currentUserId,
+            a: widget.analytics, o: widget.observer),
+        AddYourStoryScreen(
+          currentUserId: widget.currentUserId,
+            a: widget.analytics, o: widget.observer),
+        AddMessageScreen(
+          currentUserId: widget.currentUserId,
+            a: widget.analytics, o: widget.observer),
+        MyProfileSceen(
+          currentUserId: widget.currentUserId,
+            a: widget.analytics, o: widget.observer),
       ];
 }

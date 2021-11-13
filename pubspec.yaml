@@ -31,7 +31,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
 #  cupertino_icons: ^1.0.2
   font_awesome_flutter:
-  material_design_icons_flutter:
+  material_design_icons_flutter: ^5.0.6295
   dotted_border:
   animated_bottom_navigation_bar:
   dots_indicator:
@@ -40,6 +40,24 @@ dependencies:
   story_view:
   multi_image_picker2:
   provider:
+  google_sign_in:
+  firebase_auth:
+  firebase_core:
+  firebase_storage:
+  image_picker:
+  cloud_firestore:
+  path_provider:
+  uuid:
+  cached_network_image:
+  shared_preferences:
+  flutter_paystack_client: ^0.1.1
+  file_picker:
+  lottie:
+  geolocator: ^7.0.0
+  geocoding:
+  flutter_launcher_icons: ^0.9.2
+
+
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +67,11 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -59,7 +82,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/
     - assets/images/
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

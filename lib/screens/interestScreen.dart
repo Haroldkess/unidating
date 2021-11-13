@@ -1,3 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lottie/lottie.dart';
+import 'package:uni_dating/constant_firebase.dart';
+import 'package:uni_dating/database_codes/database.dart';
+import 'package:uni_dating/model/user_model.dart';
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:uni_dating/screens/startConversionScreen.dart';
@@ -6,17 +11,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'chatImageScreen.dart';
 
 class IntrestScreen extends BaseRoute {
-  IntrestScreen({a, o}) : super(a: a, o: o, r: 'IntrestScreen');
+  final User2? datingUser;
+  final String? currentUserId;
+  final User? thisProfileUser;
+  IntrestScreen({a, o, this.datingUser,this.currentUserId,this.thisProfileUser}) : super(a: a, o: o, r: 'IntrestScreen');
   @override
   _IntrestScreenState createState() => _IntrestScreenState();
 }
 
 class _IntrestScreenState extends BaseRouteState {
+  late AnimationController controller;
   int _currentIndex = 0;
   late TabController _tabController;
+  User2? _newLover;
   final List<String> imgList = [
     'assets/images/profile_img_0.png',
     'assets/images/profile_img_1.png',
@@ -26,8 +37,50 @@ class _IntrestScreenState extends BaseRouteState {
   ];
   _IntrestScreenState() : super();
 
-  @override
-  Widget build(BuildContext context) {
+  Future showDoneDialog(User thisUser) async {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset('assets/heartbeat.json',
+                    //  'https://assets6.lottiefiles.com/packages/lf20_ZKUJ2j.json',
+
+                    height: 200,
+                    width: 200,
+                    repeat: false,
+                    controller: controller, onLoaded: (composition) {
+                      controller.duration = composition.duration;
+                      controller.forward();
+
+                      usersRef.doc(widget.datingUser!.id!).update({
+                        'like': FieldValue.increment(1),
+                      }).then((_) {
+                        usersRef.doc(widget.datingUser!.id!).collection("notification").add({
+                          'id':widget.currentUserId ,
+                          'profileImage': thisUser.profileImageUrl ,
+                          'text': 'Just liked your profile',
+                          'seen': false,
+                          'type': 'like',
+                          'name': thisUser.name,
+                          'timestamp': Timestamp.now().toDate().toLocal(),
+
+                        });
+                      });
+                    }),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget ui (BuildContext context, AsyncSnapshot snapshot, User thisUser)
+  {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -47,18 +100,33 @@ class _IntrestScreenState extends BaseRouteState {
               Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    width: MediaQuery.of(context).size.width,
-                    child: Container(
-                      child: Image.asset(
-                        'assets/images/prof_img.png',
-                        fit: BoxFit.fitWidth,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(19, 1, 51, 1),
-                      ),
-                    ),
+                  StreamBuilder<DocumentSnapshot>(
+                      stream: usersRef.doc(_newLover == null || _newLover!.id == null  ? '${widget.datingUser!.id}':
+                      _newLover!.id!).snapshots(),
+                      builder: (context,AsyncSnapshot snapshot) {
+
+                        if(!snapshot.hasData)
+                        {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        User _user = User.fromDoc(snapshot.data);
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.35,
+                        width: MediaQuery.of(context).size.width,
+                        child: Container(
+                          child: Image.network(
+                            _user.profileImageUrl == null  ? '':
+                            _user.profileImageUrl!,
+                            fit: BoxFit.contain,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(19, 1, 51, 1),
+                          ),
+                        ),
+                      );
+                    }
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -70,9 +138,11 @@ class _IntrestScreenState extends BaseRouteState {
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => StartConversionScreen(
-                                      a: widget.analytics,
-                                      o: widget.observer,
-                                    )));
+                                  currentUserId: widget.currentUserId,
+                                  matchedUserData: widget.datingUser,
+                                  a: widget.analytics,
+                                  o: widget.observer,
+                                )));
                           },
                         )),
                   )
@@ -111,157 +181,176 @@ class _IntrestScreenState extends BaseRouteState {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ListTile(
-                        title: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 20,
-                                ),
-                                child: Text(
-                                  'Belle Benson',
-                                  style: Theme.of(context).primaryTextTheme.headline1,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.place,
-                                          color: Theme.of(context).iconTheme.color,
-                                          size: 20,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 4),
-                                          child: Text(
-                                            '1.5 km away',
-                                            style: Theme.of(context).primaryTextTheme.bodyText1,
-                                          ),
-                                        ),
-                                      ],
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: usersRef.doc(_newLover == null || _newLover!.id == null  ? '${widget.datingUser!.id}':
+                        _newLover!.id!).snapshots(),
+                        builder: (context,AsyncSnapshot snapshot) {
+
+                          if(!snapshot.hasData)
+                            {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          User _user = User.fromDoc(snapshot.data);
+
+                          return ListTile(
+                            title: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 20,
+                                    ),
+                                    child: Text(
+                                       _user.name == null  ? '':
+                                      _user.name!,
+                                      style: Theme.of(context).primaryTextTheme.headline1,
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    padding: EdgeInsets.only(left: 4),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.favorite_border,
-                                          color: Theme.of(context).iconTheme.color,
-                                          size: 20,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        height: 30,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.thumb_up_alt_outlined,
+                                              color: Theme.of(context).iconTheme.color,
+                                              size: 20,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 4),
+                                              child: Text(
+                                                _user.like == null  ? '':
+                                                _user.like!.toString(),
+                                                style: Theme.of(context).primaryTextTheme.bodyText1,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 4),
-                                          child: Text(
-                                            '2.7k',
-                                            style: Theme.of(context).primaryTextTheme.bodyText1,
+                                      ),
+                                      Container(
+                                        height: 30,
+                                        padding: EdgeInsets.only(left: 4),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.favorite_border,
+                                              color: Theme.of(context).iconTheme.color,
+                                              size: 20,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 4),
+                                              child: Text(
+                                                _user.love == null  ? '':
+                                                _user.love!.toString(),
+                                                style: Theme.of(context).primaryTextTheme.bodyText1,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      showDoneDialog(thisUser);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(22),
+                                          gradient: LinearGradient(
+                                            colors: [Colors.green[200]!, Colors.green[900]!],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
                                           ),
                                         ),
-                                      ],
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          radius: 22,
+                                          child: Icon(
+                                            Icons.thumb_up,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text("Starting to Dislike this person"),
+                                        backgroundColor:
+                                        Theme.of(context).primaryColorLight,
+                                        duration: Duration(seconds: 1),
+                                      ));
+
+                                      Navigator.pop(context);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10, right: 10),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(22),
+                                          gradient: LinearGradient(
+                                            colors: [Colors.red[200]!, Colors.pink[700]!],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                        ),
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.transparent,
+                                          radius: 22,
+                                          child: Icon(
+                                            Icons.thumb_down,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                        trailing: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => StartConversionScreen(
-                                            a: widget.analytics,
-                                            o: widget.observer,
-                                          )));
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(22),
-                                      gradient: LinearGradient(
-                                        colors: [Colors.green[200]!, Colors.green[900]!],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                    ),
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      radius: 22,
-                                      child: Icon(
-                                        Icons.thumb_up,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => StartSwippingScreen(
-                                            a: widget.analytics,
-                                            o: widget.observer,
-                                          )));
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10, right: 10),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(22),
-                                      gradient: LinearGradient(
-                                        colors: [Colors.red[200]!, Colors.pink[700]!],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                    ),
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      radius: 22,
-                                      child: Icon(
-                                        Icons.thumb_down,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                          );
+                        }
                       ),
                       Padding(
                         padding: g.isRTL ? const EdgeInsets.only(right: 20, top: 30) : const EdgeInsets.only(left: 20, top: 30),
                         child: Text(
-                          AppLocalizations.of(context)!.lbl_hello_friends,
+                          "Hello Friends!",
                           style: Theme.of(context).primaryTextTheme.headline3,
                         ),
                       ),
                       Padding(
                         padding: g.isRTL ? const EdgeInsets.only(right: 20, top: 10) : const EdgeInsets.only(left: 20, top: 10),
                         child: Text(
-                          'Love music, cooking, swimming, going out,\ntravelling etc. Wanna be friends??',
+                          _newLover == null || _newLover!.bio == null  ? '':
+                          _newLover!.bio!,
                           style: Theme.of(context).primaryTextTheme.subtitle2,
                         ),
                       ),
@@ -277,88 +366,47 @@ class _IntrestScreenState extends BaseRouteState {
                           tabs: [
                             _tabController.index == 0
                                 ? Tab(
-                                    child: ShaderMask(
-                                      blendMode: BlendMode.srcIn,
-                                      shaderCallback: (Rect bounds) {
-                                        return LinearGradient(
-                                          colors: g.gradientColors,
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ).createShader(bounds);
-                                      },
-                                      child: Text(
-                                        AppLocalizations.of(context)!.lbl_tab_pictures,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                  )
+                              child: ShaderMask(
+                                blendMode: BlendMode.srcIn,
+                                shaderCallback: (Rect bounds) {
+                                  return LinearGradient(
+                                    colors: g.gradientColors,
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ).createShader(bounds);
+                                },
+                                child: Text(
+                                  "Pictures",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            )
                                 : Text(
-                                    AppLocalizations.of(context)!.lbl_tab_pictures,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
+                              "Pictures",
+                              style: TextStyle(fontSize: 16),
+                            ),
                             _tabController.index == 1
                                 ? Tab(
-                                    child: ShaderMask(
-                                      blendMode: BlendMode.srcIn,
-                                      shaderCallback: (Rect bounds) {
-                                        return LinearGradient(
-                                          colors: g.gradientColors,
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ).createShader(bounds);
-                                      },
-                                      child: Text(
-                                        AppLocalizations.of(context)!.lbl_tab_videos,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                  )
+                              child: ShaderMask(
+                                blendMode: BlendMode.srcIn,
+                                shaderCallback: (Rect bounds) {
+                                  return LinearGradient(
+                                    colors: g.gradientColors,
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ).createShader(bounds);
+                                },
+                                child: Text(
+                                  'Bio',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            )
                                 : Text(
-                                    AppLocalizations.of(context)!.lbl_tab_videos,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                            _tabController.index == 2
-                                ? Tab(
-                                    child: ShaderMask(
-                                      blendMode: BlendMode.srcIn,
-                                      shaderCallback: (Rect bounds) {
-                                        return LinearGradient(
-                                          colors: g.gradientColors,
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ).createShader(bounds);
-                                      },
-                                      child: Text(
-                                        'Belle ${AppLocalizations.of(context)!.lbl_tab_Bio}',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                  )
-                                : Text(
-                                    'Belle ${AppLocalizations.of(context)!.lbl_tab_Bio}',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                            _tabController.index == 3
-                                ? Tab(
-                                    child: ShaderMask(
-                                      blendMode: BlendMode.srcIn,
-                                      shaderCallback: (Rect bounds) {
-                                        return LinearGradient(
-                                          colors: g.gradientColors,
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ).createShader(bounds);
-                                      },
-                                      child: Text(
-                                        AppLocalizations.of(context)!.lbl_tab_more,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                  )
-                                : Text(
-                                    AppLocalizations.of(context)!.lbl_tab_more,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
+                              'Bio',
+                              style: TextStyle(fontSize: 16),
+                            ),
+
                           ],
                         ),
                       ),
@@ -368,147 +416,107 @@ class _IntrestScreenState extends BaseRouteState {
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            GridView.builder(
-                              scrollDirection: Axis.horizontal,
-                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: MediaQuery.of(context).size.width,
-                                mainAxisSpacing: 2.0,
-                                crossAxisSpacing: 2.0,
-                              ),
-                              itemCount: 5,
-                              itemBuilder: (ctx, index) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  margin: g.isRTL ? EdgeInsets.only(top: 20, right: 20) : EdgeInsets.only(top: 20, left: 20),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: Colors.white),
-                                    color: g.isDarkModeEnable ? Color(0xFF1D0529) : Colors.white54,
-                                  ),
-                                  height: (MediaQuery.of(context).size.height * 0.12),
-                                  width: MediaQuery.of(context).size.width,
-                                  child: GridTile(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                        imgList[index],
-                                        height: (MediaQuery.of(context).size.height * 0.12),
-                                        width: MediaQuery.of(context).size.width,
-                                        fit: BoxFit.fitWidth,
-                                      ),
+                          _newLover == null || _newLover!.id == null ? SizedBox.shrink():  StreamBuilder(
+                                stream: DatabaseService.getProfilePosts(_newLover!.id!),
+                                builder: (context,AsyncSnapshot snapshot) {
+                                  final List<ImagePost>? post = snapshot.data;
+                                  if (snapshot.data == null || !snapshot.hasData) {
+                                    return Center(child: CircularProgressIndicator());
+                                  }
+                                  return GridView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: MediaQuery.of(context).size.width,
+                                      mainAxisSpacing: 2.0,
+                                      crossAxisSpacing: 2.0,
                                     ),
-                                  ),
-                                );
-                              },
+                                    itemCount: post!.length,
+                                    itemBuilder: (ctx, index) {
+                                      return GestureDetector(
+                                        onTap: (){
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ChatImage(
+                                            imageUrl: post[index].image!,
+                                            currentUserId: widget.currentUserId,
+                                          )));
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin: g.isRTL ? EdgeInsets.only(top: 20, right: 20) : EdgeInsets.only(top: 20, left: 20),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(color: Colors.white),
+                                            color: g.isDarkModeEnable ? Color(0xFF1D0529) : Colors.white54,
+                                          ),
+                                          height: (MediaQuery.of(context).size.height * 0.12),
+                                          width: MediaQuery.of(context).size.width,
+                                          child: GridTile(
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(20),
+                                              child: Image.network(
+                                                post[index].image!,
+                                                height: (MediaQuery.of(context).size.height * 0.12),
+                                                width: MediaQuery.of(context).size.width,
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
                             ),
                             Container(),
-                            Container(),
-                            Container()
+
                           ],
                         ),
                       ),
                       Padding(
                         padding: g.isRTL ? const EdgeInsets.only(right: 20, top: 30) : const EdgeInsets.only(left: 20, top: 30),
                         child: Text(
-                          AppLocalizations.of(context)!.lbl_intrests,
+                          "Intrests",
                           style: Theme.of(context).primaryTextTheme.headline3,
                         ),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(bottom: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: g.isRTL ? const EdgeInsets.only(right: 20, top: 20) : const EdgeInsets.only(left: 20, top: 20),
+                          child: SizedBox(
+                            height: 50.0,
+                            child: ListView.builder(
+                              padding: EdgeInsets.all(8.0),
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: _newLover == null || _newLover!.intrests == null ? 0 :  _newLover!.intrests!.length,
+                              itemBuilder: (BuildContext context, index){
+                                List<String> _intrests = [];
+
+                                _intrests..addAll(_newLover!.intrests!);
+                                print(_intrests);
+
+                                return  Padding(
+                                  padding: EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Icon(
-                                        MdiIcons.music,
+                                        MdiIcons.emoticonHappy,
                                         color: Color(0xFFB783EB),
                                         size: 20,
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 4),
                                         child: Text(
-                                          'Music',
+                                          "${_intrests[index].toString()}",
                                           style: Theme.of(context).accentTextTheme.subtitle2,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        MdiIcons.cookie,
-                                        color: Color(0xFFB783EB),
-                                        size: 20,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 4),
-                                        child: Text(
-                                          'Cooking',
-                                          style: Theme.of(context).accentTextTheme.subtitle2,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        MdiIcons.swim,
-                                        color: Color(0xFFB783EB),
-                                        size: 20,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 4),
-                                        child: Text(
-                                          'Swimming',
-                                          style: Theme.of(context).accentTextTheme.subtitle2,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 20),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.explore,
-                                       // Icons.travel_explore,
-                                        color: Color(0xFFB783EB),
-                                        size: 20,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 4),
-                                        child: Text(
-                                          'Travelling',
-                                          style: Theme.of(context).accentTextTheme.subtitle2,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                                );
+                              },
+
+
+                            ),
                           ))
                     ],
                   ),
@@ -522,10 +530,50 @@ class _IntrestScreenState extends BaseRouteState {
   }
 
   @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<DocumentSnapshot>(
+      future: usersRef.doc(widget.currentUserId).get(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ));
+        }
+        User thisUser = User.fromDoc(snapshot.data);
+        return ui(context, snapshot, thisUser);
+      },
+    );
+  }
+
+  @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 4, vsync: this, initialIndex: _currentIndex);
+
+    controller = AnimationController(vsync: this);
+
+    controller.addStatusListener((status) async {
+      if (status == AnimationStatus.completed) {
+        Navigator.pop(context);
+        controller.reset();
+      }
+    });
+    _tabController = new TabController(length: 2, vsync: this, initialIndex: _currentIndex);
     _tabController.addListener(_tabControllerListener);
+    _getNewDaters();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+   _getNewDaters() async {
+     User2 newLover =   await DatabaseService.getNewLoverWithId(widget.datingUser!);
+   setState(() {
+     _newLover = newLover ;
+   });
+    
   }
 
   void _tabControllerListener() {

@@ -4,7 +4,6 @@ import 'package:uni_dating/screens/LocationScreen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -51,7 +50,7 @@ class _UploadIdScreenState extends BaseRouteState {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.lbl_upload_id,
+                    "Upload ID",
                     style: Theme.of(context).primaryTextTheme.headline1,
                   ),
                   Padding(
@@ -180,7 +179,7 @@ class _UploadIdScreenState extends BaseRouteState {
                                 ).createShader(bounds);
                               },
                               child: Text(
-                                AppLocalizations.of(context)!.lbl_upload_doc,
+                                "Upload Document",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -208,13 +207,14 @@ class _UploadIdScreenState extends BaseRouteState {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
                               builder: (context) => LocationScreen(
                                     a: widget.analytics,
                                     o: widget.observer,
                                   )));
                         },
-                        child: Text(AppLocalizations.of(context)!.btn_continue,
+                        child: Text("Continue",
                             style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                               MaterialState.pressed,
                             })),

@@ -5,11 +5,11 @@ import 'package:uni_dating/screens/settingScreen.dart';
 import 'package:uni_dating/screens/viewPlanScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DatingMatchesScreen extends BaseRoute {
-  DatingMatchesScreen({a, o}) : super(a: a, o: o, r: 'DatingMatchesScreen');
+  final String? currentUserId;
+  DatingMatchesScreen({a, o,this.currentUserId}) : super(a: a, o: o, r: 'DatingMatchesScreen');
   @override
   _DatingMatchesScreenState createState() => _DatingMatchesScreenState();
 }
@@ -47,6 +47,7 @@ class _DatingMatchesScreenState extends BaseRouteState {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => SettingScreen(
+                      currentUserId: widget.currentUserId ,
                           a: widget.analytics,
                           o: widget.observer,
                         )));
@@ -64,14 +65,14 @@ class _DatingMatchesScreenState extends BaseRouteState {
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_dating_matches,
+                      "Dating Matches",
                       style: Theme.of(context).primaryTextTheme.headline1,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      AppLocalizations.of(context)!.lbl_check_out_list_of_matches_keep_enjoying,
+                      "Check out lists of matches & keep enjoying",
                       style: Theme.of(context).primaryTextTheme.subtitle2,
                     ),
                   ),
@@ -89,10 +90,10 @@ class _DatingMatchesScreenState extends BaseRouteState {
                         setState(() {});
                       },
                       tabs: [
-                        Tab(text: AppLocalizations.of(context)!.lbl_Tab_All),
-                        Tab(text: AppLocalizations.of(context)!.lbl_tab_you_likes),
-                        Tab(text: AppLocalizations.of(context)!.lbl_Tab_liked_you),
-                        Tab(text: AppLocalizations.of(context)!.lbl_tab_views),
+                        Tab(text: "All"),
+                        Tab(text: "You Liked"),
+                        Tab(text: "Liked You"),
+                        Tab(text: "Views"),
                       ],
                     ),
                   ),
@@ -236,6 +237,7 @@ class _DatingMatchesScreenState extends BaseRouteState {
                                     onTap: () {
                                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                                           builder: (context) => ViewPlanScreen(
+                                            currentUserId: widget.currentUserId,
                                                 a: widget.analytics,
                                                 o: widget.observer,
                                               )));

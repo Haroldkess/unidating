@@ -3,10 +3,10 @@ import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:uni_dating/screens/planDatingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewPlanScreen extends BaseRoute {
-  ViewPlanScreen({a, o}) : super(a: a, o: o, r: 'ViewPlanScreen');
+  final String? currentUserId;
+  ViewPlanScreen({a, o,this.currentUserId}) : super(a: a, o: o, r: 'ViewPlanScreen');
   @override
   _ViewPlanScreenState createState() => _ViewPlanScreenState();
 }
@@ -42,13 +42,13 @@ class _ViewPlanScreenState extends BaseRouteState {
                   ),
                 ),
                 Text(
-                  AppLocalizations.of(context)!.lbl_hello_user,
+                  "Hello User",
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    'To continue with this option please\nchoose a subsciption plan that suits\nyou & get the most out of the app',
+                    'To continue with this option please\nchoose a subscription plan that suits\nyou & get the most out of the app',
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                 ),
@@ -74,7 +74,7 @@ class _ViewPlanScreenState extends BaseRouteState {
                                   o: widget.observer,
                                 )));
                       },
-                      child: Text(AppLocalizations.of(context)!.btn_view_plan,
+                      child: Text("View Plans",
                           style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                             MaterialState.pressed,
                           })),

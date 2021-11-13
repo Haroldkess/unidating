@@ -1,12 +1,14 @@
+import 'package:uni_dating/model/user_model.dart';
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RewardScreen extends BaseRoute {
-  RewardScreen({a, o}) : super(a: a, o: o, r: 'RewardScreen');
+  final User? thisProfileUser;
+  final String? currentUserId;
+  RewardScreen({a, o,this.currentUserId,this.thisProfileUser}) : super(a: a, o: o, r: 'RewardScreen');
   @override
   _RewardScreenState createState() => _RewardScreenState();
 }
@@ -563,7 +565,7 @@ class _RewardScreenState extends BaseRouteState {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text(AppLocalizations.of(context)!.btn_continue,
+                            child: Text("Continue",
                                 style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                                   MaterialState.pressed,
                                 })),
@@ -797,7 +799,7 @@ class _RewardScreenState extends BaseRouteState {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text(AppLocalizations.of(context)!.btn_continue,
+                            child: Text("Continue",
                                 style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                                   MaterialState.pressed,
                                 })),
@@ -1038,7 +1040,7 @@ class _RewardScreenState extends BaseRouteState {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text(AppLocalizations.of(context)!.btn_continue,
+                            child: Text("Continue",
                                 style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                                   MaterialState.pressed,
                                 })),
@@ -1284,7 +1286,7 @@ class _RewardScreenState extends BaseRouteState {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text(AppLocalizations.of(context)!.btn_boost_me,
+                            child: Text("BOOST ME",
                                 style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                                   MaterialState.pressed,
                                 })),

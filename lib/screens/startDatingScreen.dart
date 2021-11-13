@@ -1,12 +1,14 @@
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
+import 'package:uni_dating/screens/likes&IntrestScreen.dart';
 import 'package:uni_dating/screens/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uni_dating/screens/profileDetailScreen.dart';
 
 class StartDatingScreen extends BaseRoute {
-  StartDatingScreen({a, o}) : super(a: a, o: o, r: 'StartDatingScreen');
+  final String? currentUserId;
+  StartDatingScreen({a, o,this.currentUserId}) : super(a: a, o: o, r: 'StartDatingScreen');
   @override
   _StartDatingScreenState createState() => _StartDatingScreenState();
 }
@@ -38,22 +40,22 @@ class _StartDatingScreenState extends BaseRouteState {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    AppLocalizations.of(context)!.lbl_online_dating_app,
+                    "Online Dating App",
                     style: Theme.of(context).primaryTextTheme.headline4,
                   ),
                 ),
                 Text(
-                  AppLocalizations.of(context)!.lbl_start_dating_subtitle1,
+                 "Find Your",
                   style: Theme.of(context).primaryTextTheme.headline5,
                 ),
                 Text(
-                  AppLocalizations.of(context)!.lbl_start_dating_subtitle2,
+                  "Best Match",
                   style: Theme.of(context).primaryTextTheme.headline5,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    AppLocalizations.of(context)!.lbl_start_dating_subtitle3,
+                    "Wanna know how the app works?",
                     style: TextStyle(
                       color: g.isDarkModeEnable ? Colors.white70 : Color(0xFF5E50E5),
                       fontWeight: FontWeight.w600,
@@ -63,7 +65,7 @@ class _StartDatingScreenState extends BaseRouteState {
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
-                    AppLocalizations.of(context)!.lbl_play_video,
+                    "Play the Video",
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
@@ -86,14 +88,16 @@ class _StartDatingScreenState extends BaseRouteState {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => LoginScreen(
+                        print(widget.currentUserId);
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => LikesIntrestScreen(
+                              currentUserId: widget.currentUserId,
                                   a: widget.analytics,
                                   o: widget.observer,
                                 )));
                       },
                       child: Text(
-                        AppLocalizations.of(context)!.lbl_start_dating,
+                        "Start Dating",
                         style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                           MaterialState.pressed,
                         }),

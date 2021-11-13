@@ -1,13 +1,23 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uni_dating/api/firebase_api.dart';
+import 'package:uni_dating/constant_firebase.dart';
+import 'package:uni_dating/model/user_model.dart';
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
 import 'package:uni_dating/screens/addTextCreateStoryScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path/path.dart' hide context;
 
 class CreateStoryScreen extends BaseRoute {
-  CreateStoryScreen({a, o}) : super(a: a, o: o, r: 'CreateStoryScreen');
+  final String? currentUserId;
+  final User2? matchedUserData;
+  CreateStoryScreen({a, o,this.currentUserId,this.matchedUserData}) : super(a: a, o: o, r: 'CreateStoryScreen');
   @override
   _CreateStoryScreenState createState() => new _CreateStoryScreenState();
 }
@@ -50,6 +60,8 @@ class _CreateStoryScreenState extends BaseRouteState {
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => AddTextCreateStory(
+                                  currentUserId: widget.currentUserId,
+                                      matchedUserData: widget.matchedUserData,
                                       a: widget.analytics,
                                       o: widget.observer,
                                     )));
@@ -74,14 +86,14 @@ class _CreateStoryScreenState extends BaseRouteState {
                                   backgroundColor: Colors.white,
                                   radius: 30,
                                   child: Text(
-                                    AppLocalizations.of(context)!.lbl_Aa,
+                                    "Aa",
                                     style: Theme.of(context).accentTextTheme.headline1,
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4),
                                   child: Text(
-                                    AppLocalizations.of(context)!.lbl_Text,
+                                    "Text",
                                     style: Theme.of(context).accentTextTheme.headline4,
                                   ),
                                 )
@@ -91,7 +103,14 @@ class _CreateStoryScreenState extends BaseRouteState {
                         ),
                         InkWell(
                           onTap: () {
-                            loadAssets();
+                           // loadAssets();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PostUpload(
+                                      currentUserId:
+                                      widget.currentUserId,
+                                    )));
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -122,7 +141,7 @@ class _CreateStoryScreenState extends BaseRouteState {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 4),
                                   child: Text(
-                                    AppLocalizations.of(context)!.lbl_Media,
+                                    "Media",
                                     style: Theme.of(context).accentTextTheme.headline4,
                                   ),
                                 )
@@ -182,7 +201,8 @@ class _CreateStoryScreenState extends BaseRouteState {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text(AppLocalizations.of(context)!.btn_create,
+                      child: Text(
+                          "Create",
                           style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
                             MaterialState.pressed,
                           })),
@@ -253,5 +273,208 @@ class _CreateStoryScreenState extends BaseRouteState {
       images = resultList;
       //_error = error;
     });
+  }
+}
+
+
+class PostUpload extends StatefulWidget {
+  final String? currentUserId;
+
+  PostUpload({this.currentUserId});
+
+  @override
+  _PostUploadState createState() => _PostUploadState();
+}
+
+class _PostUploadState extends State<PostUpload> {
+  String? url;
+  UploadTask? task;
+  File? file;
+
+
+  bool? isLoading = false;
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false,type: FileType.image);
+
+    if (result == null) return;
+    final path = result.files.single.path!;
+
+    setState(() => file = File(path));
+  }
+
+  Future uploadFile(User thisUser) async {
+    setState(() {
+      isLoading = true;
+    });
+    if (file == null) return;
+
+    final fileName = basename(file!.path);
+    final destination = 'files/$fileName';
+
+    task = FirebaseApi.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    url = urlDownload;
+
+    setState(() {
+      file = null;
+
+    });
+
+    // User user = User(
+    //
+    //   name:  _cFirstName.text.toString(),
+    //   phoneNumber: phone,
+    //   profileImageUrl: url,
+    //   dob: dob,
+    //   gender: _gender,
+    //
+    //
+    // );
+    // // Database update
+    await  usersRef
+        .doc(widget.currentUserId)
+        .collection("Matched")
+        .get()
+        .then((value) {
+
+      value.docs.forEach((element) async {
+
+        print(element.id.toString());
+        print(element.reference.id.toString());
+        print(value.docs.toString());
+
+        usersRef
+            .doc(element.reference.id.toString())
+            .collection("StatusPost").doc(widget.currentUserId).collection("status")
+            .add({
+          'text': urlDownload,
+          'id': widget.currentUserId ,
+          'profileImage': thisUser.profileImageUrl,
+          'name' : thisUser.name,
+          'type': 'image',
+          'timestamp': Timestamp.now().toDate().toLocal(),
+
+        });
+        print("done");
+        print(element.id.toString());
+        print(element.reference.id.toString());
+        print(value.docs.toString());
+      });
+    });
+    setState((){
+      isLoading =  false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+      content: Text("Status updated"),
+      backgroundColor: Theme.of(context).primaryColorLight,
+      //  backgroundColor: Colors.black,
+    ));
+
+
+
+    Navigator.of(context).pop();
+
+    print('Download-Link: $urlDownload');
+    Navigator.pop(context);
+  }
+
+  PreferredSizeWidget _appBarWidget( User thisUser) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(65),
+      child: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(right: 8),
+            alignment: g.isRTL ? Alignment.centerLeft : Alignment.centerRight,
+            width: MediaQuery.of(context).size.width,
+            color: g.isDarkModeEnable
+                ? Color(0xFF130032)
+                : Theme.of(context).scaffoldBackgroundColor,
+            height: 65,
+            child: isLoading == false ? IconButton(
+              icon: Icon(Icons.send),
+              color: Theme.of(context).iconTheme.color,
+              onPressed: ()=> uploadFile(thisUser),
+            ):
+            CircularProgressIndicator(),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 8),
+            alignment: g.isRTL ? Alignment.centerRight : Alignment.centerLeft,
+            color: Color(0xFFDC3664),
+            width: MediaQuery.of(context).size.width / 2 - 35,
+            height: 65,
+            child: IconButton(
+              icon: Icon(FontAwesomeIcons.longArrowAltLeft),
+              color: Colors.white,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget createPostUi(BuildContext context, AsyncSnapshot snapshot, User thisUser){
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final fileName = file != null ? basename(file!.path) : 'No File Selected';
+    return SafeArea(
+      top: true,
+      child: Scaffold(
+        appBar: _appBarWidget(thisUser),
+        body: GestureDetector(
+          onTap: selectFile,
+          child: Container(
+            height: height,
+            width: width,
+            child: file == null
+                ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add_a_photo,
+                  color: Colors.grey,
+                  size: 150.0,
+                ),
+                Text(" Tap to post")
+              ],
+            )
+                : Image(
+              image: FileImage(file!),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<DocumentSnapshot>(
+      future: usersRef.doc(widget.currentUserId).get(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ));
+        }
+        User thisUser = User.fromDoc(snapshot.data);
+        return createPostUi(context, snapshot, thisUser);
+      },
+    );
+
   }
 }
