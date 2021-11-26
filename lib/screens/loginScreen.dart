@@ -73,7 +73,7 @@ class _LoginScreenState extends BaseRouteState {
               ),
             ),
             Text(
-              "Please enter the 4-digit code",
+              "Please enter the 6-digit code",
               style: Theme.of(context).primaryTextTheme.subtitle2,
             ),
             Text(
