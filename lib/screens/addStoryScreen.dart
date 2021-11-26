@@ -46,6 +46,8 @@ class _AddStoryScreenState extends BaseRouteState {
   String? _anonymousSecret;
   int? _leftDirection;
   int? _rightDirection;
+  bool? swipingRight= false ;
+  bool? swipingLeft = false;
 
   List<User>? users = [];
   User? thisUniUser;
@@ -477,114 +479,163 @@ class _AddStoryScreenState extends BaseRouteState {
                                               _leftDirection = 1;
                                               // ignore: null_check_always_fails
                                               _rightDirection = null;
+
+                                              if(_leftDirection ==   1)
+                                              {
+                                                setState(() {
+                                                  swipingRight = false;
+                                                  swipingLeft = true;
+
+                                                });
+                                              }
                                             });
                                           }
                                           if (_event.delta.dx > 0) {
                                             setState(() {
                                               _rightDirection = 2;
                                               _leftDirection = null;
+                                              if(_rightDirection == 2)
+                                                {
+                                                  setState(() {
+                                                    swipingLeft = false;
+                                                    swipingRight = true;
+
+                                                  });
+                                                }
+
+
                                             });
                                           }
                                         },
-                                        child: TCard(
-                                          cards: _widgets(),
-                                          controller: _controller,
-                                          onForward: (index, info) {
-                                            if (info.direction ==
-                                                SwipDirection.Left) {
-                                              if (users![_current!].id! !=
-                                                  widget.currentUserId) {
-                                                DatabaseService
-                                                    .addLikedCard(
-                                                  thisUser,
-                                                  widget.currentUserId!,
-                                                  users![_current!]
-                                                      .intrests!,
-                                                  users![_current!].name!,
-                                                  users![_current!]
-                                                      .email!,
-                                                  users![_current!]
-                                                      .phoneNumber ==
-                                                      null
-                                                      ? ""
-                                                      : users![_current!]
-                                                      .phoneNumber!,
-                                                  users![_current!].id!,
-                                                  users![_current!]
-                                                      .profileImageUrl!,
-                                                  users![_current!]
-                                                      .onlineOffline!,
-                                                  users![_current!].paid!,
-                                                );
-                                              }
+                                        child: Stack(
+                                          children: [
+                                            TCard(
+                                              cards: _widgets(),
+                                              controller: _controller,
+                                              onForward: (index, info) {
+                                                if (info.direction ==
+                                                    SwipDirection.Left) {
+                                                  if (users![_current!].id! !=
+                                                      widget.currentUserId) {
+                                                    DatabaseService
+                                                        .addLikedCard(
+                                                      thisUser,
+                                                      widget.currentUserId!,
+                                                      users![_current!]
+                                                          .intrests!,
+                                                      users![_current!].name!,
+                                                      users![_current!]
+                                                          .email!,
+                                                      users![_current!]
+                                                          .phoneNumber ==
+                                                          null
+                                                          ? ""
+                                                          : users![_current!]
+                                                          .phoneNumber!,
+                                                      users![_current!].id!,
+                                                      users![_current!]
+                                                          .profileImageUrl!,
+                                                      users![_current!]
+                                                          .onlineOffline!,
+                                                      users![_current!].paid!,
+                                                    );
+                                                  }
 
-                                              users![_current!].id! !=
-                                                  widget.currentUserId
-                                                  ? ScaffoldMessenger.of(
-                                                  context)
-                                                  .showSnackBar(
-                                                  SnackBar(
+                                                  users![_current!].id! !=
+                                                      widget.currentUserId
+                                                      ? ScaffoldMessenger.of(
+                                                      context)
+                                                      .showSnackBar(
+                                                      SnackBar(
+                                                        content: Text(
+                                                            "Interested"),
+                                                        backgroundColor: Theme
+                                                            .of(context)
+                                                            .primaryColorLight,
+                                                      ))
+                                                      : ScaffoldMessenger.of(
+                                                      context)
+                                                      .showSnackBar(
+                                                      SnackBar(
+                                                        duration: Duration(
+                                                            seconds: 1),
+                                                        content: Text(
+                                                            "Kindly Subscribe"),
+                                                        backgroundColor: Theme
+                                                            .of(context)
+                                                            .primaryColorLight,
+                                                      ));
+
+                                                  setState(() {
+                                                    //    if(users.length == index )
+                                                    // {
+                                                    //   _controller.reset();
+                                                    //   _current = 0;
+                                                    //
+                                                    // }
+
+                                                    _current = index;
+                                                    _leftDirection = 0;
+                                                    _rightDirection = 0;
+                                                  });
+                                                  print(index);
+                                                  print(users!.length);
+                                                  setState(() {
+                                                    swipingRight = false;
+                                                    swipingLeft = false;
+                                                  });
+                                                }
+                                                if (info.direction ==
+                                                    SwipDirection.Right) {
+                                                  setState(() {
+                                                    _current = index;
+                                                    _leftDirection = 0;
+                                                    _rightDirection = 0;
+                                                  });
+                                                  print(index);
+                                                  print(users!.length);
+                                                  ScaffoldMessenger.of(
+                                                      context)
+                                                      .showSnackBar(SnackBar(
+                                                    duration: Duration(seconds: 1),
                                                     content: Text(
-                                                        "Interested"),
+                                                        "Not Interested"),
                                                     backgroundColor: Theme
-                                                        .of(context)
+                                                        .of(
+                                                        context)
                                                         .primaryColorLight,
-                                                  ))
-                                                  : ScaffoldMessenger.of(
-                                                  context)
-                                                  .showSnackBar(
-                                                  SnackBar(
-                                                    duration: Duration(
-                                                        seconds: 1),
-                                                    content: Text(
-                                                        "Kindly Subscribe"),
-                                                    backgroundColor: Theme
-                                                        .of(context)
-                                                        .primaryColorLight,
+                                                    //  backgroundColor: Colors.black,
                                                   ));
-
-                                              setState(() {
-                                                //    if(users.length == index )
-                                                // {
-                                                //   _controller.reset();
-                                                //   _current = 0;
-                                                //
-                                                // }
-
-                                                _current = index;
-                                                _leftDirection = 0;
-                                                _rightDirection = 0;
-                                              });
-                                              print(index);
-                                              print(users!.length);
-                                            }
-                                            if (info.direction ==
-                                                SwipDirection.Right) {
-                                              setState(() {
-                                                _current = index;
-                                                _leftDirection = 0;
-                                                _rightDirection = 0;
-                                              });
-                                              print(index);
-                                              print(users!.length);
-                                              ScaffoldMessenger.of(
-                                                  context)
-                                                  .showSnackBar(SnackBar(
-                                                duration: Duration(seconds: 1),
-                                                content: Text(
-                                                    "Not Interested"),
-                                                backgroundColor: Theme
-                                                    .of(
-                                                    context)
-                                                    .primaryColorLight,
-                                                //  backgroundColor: Colors.black,
-                                              ));
-                                            }
-                                          },
-                                          onEnd: () {
-                                            _controller.reset();
-                                            _current = 0;
-                                          },
+                                                  setState(() {
+                                                    swipingRight = false;
+                                                    swipingLeft = false;
+                                                  });
+                                                }
+                                              },
+                                              onEnd: () {
+                                                _controller.reset();
+                                                _current = 0;
+                                                setState(() {
+                                                  swipingRight = false;
+                                                  swipingLeft = false;
+                                                });
+                                              },
+                                            ),
+                                            swipingLeft  == true ?   Container(
+                                              height: 100.0,
+                                              width: 100.0,
+                                              child: Lottie.network("https://assets3.lottiefiles.com/packages/lf20_Oa7lbT.json"),
+                                            ) : swipingRight == true ? Positioned(
+                                              top: 0.1,
+                                              right: 0.1,
+                                              child: Container(
+                                                alignment: Alignment.topRight,
+                                                height: 100.0,
+                                                width: 100.0,
+                                           child:Lottie.network("https://assets7.lottiefiles.com/packages/lf20_Wlgzlq.json") ,
+                                         ),
+                                            ) : SizedBox.shrink()
+                                          ],
                                         ),
                                       ),
                                     ),
