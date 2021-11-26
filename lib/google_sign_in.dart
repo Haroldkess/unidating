@@ -1,7 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uni_dating/constant_firebase.dart';
+
+import 'model/user_model.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
@@ -23,126 +26,158 @@ class GoogleSignInProvider extends ChangeNotifier {
       idToken: googleAuth.idToken,
     );
 
-    await FirebaseAuth.instance.signInWithCredential(credential).then((value){
-      final user = FirebaseAuth.instance.currentUser!;
-      usersRef.doc().get().then((value) {
+    var id;
 
-        value.reference.snapshots().forEach((element) {
-          print(element.id);
-          if (element.data()!['id'] == (_user!.id)  || element.data()!['id'] != null ) {
-            usersRef.doc(user.uid).update({
-              'id': user.uid,
-              'onlineStatus': true,
-              'onlineOffline': true,
+    await FirebaseAuth.instance.signInWithCredential(credential);
 
-            });
-          }
-          else {
-            usersRef.doc(user.uid).set({
-              'name': user.displayName,
-              'phoneNumber': '',
-              'email': user.email,
-              'profileImageUrl': user.photoURL,
-              'id': user.uid,
-              'onlineStatus': true,
-              'paid': false,
-              'onlineOffline': true,
-              'lastMessage': '',
-              'read': false,
-              'dob': 0,
-              'gender': '',
-              'bio': '',
-              'like': 0,
-              'love': 0,
-              'notificationNumber': 0,
-              'filters': ['0','0']
+    final user = FirebaseAuth.instance.currentUser!;
 
+    List<String> ids = [];
+    bool? exist;
+    await usersRef.get().then((value) {
+      value.docs.forEach((element) async {
+        String id = element.id;
+        ids..addAll([id]);
+        print("this is the element id $ids");
+        if (ids.contains(user.uid.toString()) ||
+            (element.id == user.uid.toString()) ||
+            id == user.uid) {
+          exist = true;
+        } else {
+          exist = false;
+        }
 
-            });
-          }
-        });
+        //   print(exist);
+      });
+    });
+
+    if (exist == true) {
+      print("thia user exist");
+      await usersRef.doc(user.uid).update({
+        'id': user.uid,
+        'onlineStatus': true,
+        'onlineOffline': true,
+      });
+      notifyListeners();
+
+      return;
+    }
+
+    if (exist == false) {
+      //   print(exist);
+      await usersRef.doc(user.uid).set({
+        'name': user.displayName,
+        'phoneNumber': '',
+        'email': user.email,
+        'profileImageUrl': '',
+        'id': user.uid,
+        'onlineStatus': true,
+        'paid': false,
+        'onlineOffline': true,
+        'lastMessage': '',
+        'read': false,
+        'dob': 0,
+        'gender': '',
+        'bio': '',
+        'like': 0,
+        'love': 0,
+        'notificationNumber': 0,
+        'filters': ['0', '0'],
+        'intrests': ['Photography', 'Music', 'Swimming'],
       });
 
-    });
+      await subPeriod.doc(user.uid).set({
+        'endDate': Timestamp.now().toDate().subtract(Duration(days: 10)),
+        'paid': false,
+        'startDate': Timestamp.now().toDate().toLocal(),
+        'type': 'null'
+      });
+    }
 
     notifyListeners();
   }
-  Future<void> signInWithPhoneAuthCredential (
+
+  Future<void> signInWithPhoneAuthCredential(
       PhoneAuthCredential phoneAuthCredential) async {
     // setState(() {
     //   showLoading = true;
     // });
 
-    try {
-      final authCredential =
-      await _auth.signInWithCredential(phoneAuthCredential);
-     var id =  PhoneAuthProvider.PROVIDER_ID;
-      print("this is your login id $id");
+    final authCredential =
+        await _auth.signInWithCredential(phoneAuthCredential);
+    var id = PhoneAuthProvider.PROVIDER_ID;
+    print("this is your login id $id");
 
     var user = _auth.currentUser;
 
-      // setState(() {
-      //   showLoading = false;
-      // });
-      print("this is your login id using _auth  ${user!.uid}");
+    List<String> ids = [];
+    bool? exist;
 
-        usersRef.get().then((value) {
-          value.docs.forEach((element) {
-            print(element.id);
+    await usersRef.get().then((value) {
+      value.docs.forEach((element) async {
+        String id = element.id;
+        ids..addAll([id]);
+        print("this is the element id $ids");
+        if (ids.contains(user!.uid.toString()) ||
+            (element.id == user.uid.toString()) ||
+            id == user.uid) {
+          exist = true;
+        } else {
+          exist = false;
+        }
+        //    print(element.id);
+      });
+    });
 
-            if (element.id == (user.uid)  ) {
-              usersRef.doc(user.uid).update({
-                'id': user.uid,
-                'onlineStatus': true,
-                'onlineOffline': true,
+    if (exist == true) {
+      print("this user exist");
+      await usersRef.doc(user!.uid).update({
+        'id': user.uid,
+        'onlineStatus': true,
+        'onlineOffline': true,
+      });
+      notifyListeners();
 
-              });
-            }
-            else {
-              usersRef.doc(user.uid).set({
-                'name': '',
-                'phoneNumber': user.phoneNumber,
-                'email': '',
-                'profileImageUrl': '',
-                'id': user.uid,
-                'onlineStatus': true,
-                'paid': false,
-                'onlineOffline': true,
-                'lastMessage': '',
-                'read': false,
-                'dob': 0,
-                'gender': '',
-                'bio': '',
-                'like': 0,
-                'love': 0,
-                'notificationNumber': 0,
-                'filters': [''],
-                'intrests': [''],
-
-
-
-              });
-              print("created");
-            }
-          });
-        });
-
-        notifyListeners();
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => ProfileDetailScreen(
-        //       currentUserId: authCredential.user!.uid,
-        //       a: widget.analytics,
-        //       o: widget.observer,
-        //     )));
-
-
-    } on FirebaseAuthException catch (e) {
-      // setState(() {
-      //   showLoading = false;
-      // });
-
-      // _scaffoldKey.currentState!
-      //     .showSnackBar(SnackBar(content: Text(e.message)));
+      return;
     }
+
+    if (exist == false) {
+      //   print(exist);
+      await usersRef.doc(user!.uid).set({
+        'name': '',
+        'phoneNumber': user.phoneNumber,
+        'email': '',
+        'profileImageUrl': '',
+        'id': user.uid,
+        'onlineStatus': true,
+        'paid': false,
+        'onlineOffline': true,
+        'lastMessage': '',
+        'read': false,
+        'dob': 0,
+        'gender': '',
+        'bio': '',
+        'like': 0,
+        'love': 0,
+        'notificationNumber': 0,
+        'filters': ['0', '0'],
+        'intrests': ['Photography', 'Music', 'Swimming'],
+      });
+
+      await subPeriod.doc(user.uid).set({
+        'endDate': Timestamp.now().toDate().subtract(Duration(days: 10)),
+        'paid': false,
+        'startDate': Timestamp.now().toDate().toLocal(),
+        'type': 'null'
+      });
+    }
+
+    notifyListeners();
+    // Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => ProfileDetailScreen(
+    //       currentUserId: authCredential.user!.uid,
+    //       a: widget.analytics,
+    //       o: widget.observer,
+    //     )));
   }
 }

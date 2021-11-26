@@ -371,7 +371,7 @@ class _MyProfileSceenState extends BaseRouteState {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 20, left: 20),
                             child: Text(
-                              "${thisUser.name!}",
+                            thisUser.name == null ? '': "${thisUser.name!}",
                               style:
                               Theme.of(context).primaryTextTheme.headline1,
                             ),
@@ -420,7 +420,7 @@ class _MyProfileSceenState extends BaseRouteState {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 4),
                                       child: Text(
-                                        '${user.email!}',
+                                       user.email == null ? ' ' :  '${user.email}',
                                         style: Theme.of(context)
                                             .primaryTextTheme
                                             .bodyText1,
@@ -446,7 +446,7 @@ class _MyProfileSceenState extends BaseRouteState {
                               ? const EdgeInsets.only(right: 20, top: 10)
                               : const EdgeInsets.only(left: 20, top: 10),
                           child: Text(
-                            '${thisUser.bio}',maxLines: 10,textDirection: TextDirection.ltr,softWrap: true,overflow: TextOverflow.fade,
+                            thisUser.bio == null ? '' : '${thisUser.bio}',maxLines: 10,textDirection: TextDirection.ltr,softWrap: true,overflow: TextOverflow.fade,
                             style: Theme.of(context).primaryTextTheme.subtitle2,
                           ),
                         ),
@@ -520,7 +520,7 @@ class _MyProfileSceenState extends BaseRouteState {
                                     if (snapshot.data == null || !snapshot.hasData) {
                                       return Center(child: CircularProgressIndicator());
                                     }
-                                    return GridView.builder(
+                                    return post!.length > 0 ? GridView.builder(
                                       scrollDirection: Axis.horizontal,
                                       gridDelegate:
                                       SliverGridDelegateWithMaxCrossAxisExtent(
@@ -529,7 +529,7 @@ class _MyProfileSceenState extends BaseRouteState {
                                         mainAxisSpacing: 2.0,
                                         crossAxisSpacing: 2.0,
                                       ),
-                                      itemCount: post!.length,
+                                      itemCount: post.length,
                                       itemBuilder: (ctx, index) {
                                         return GestureDetector(
                                          onTap: (){
@@ -570,7 +570,8 @@ class _MyProfileSceenState extends BaseRouteState {
                                           ),
                                         );
                                       },
-                                    );
+                                    ) :
+                                    SizedBox.shrink();
                                   }
                               ),
                               Container(),

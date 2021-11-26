@@ -52,7 +52,7 @@ class User {
       id: doc.id,
     //  firstName: doc['firstName'],
     //  lastName: doc['lastName'],
-      profileImageUrl: doc['profileImageUrl'],
+     profileImageUrl: doc['profileImageUrl'],
     //  userLocation: doc["userLocation"],
       phoneNumber: doc['phoneNumber'],
       email: doc['email'],

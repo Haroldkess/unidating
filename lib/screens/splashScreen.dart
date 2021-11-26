@@ -18,6 +18,7 @@ import '../google_sign_in.dart';
 
 class SplashScreen extends BaseRoute {
   final String? currentUserId;
+
   SplashScreen({a, o,this.currentUserId}) : super(a: a, o: o, r: 'SplashScreen');
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -73,23 +74,9 @@ class _SplashScreenState extends BaseRouteState {
       );
     }
   }
-Widget ui (BuildContext context, AsyncSnapshot snapshot, [SubscriptionPeriod? subscriptionPeriod] )
+Widget ui (BuildContext context)
   {
-    if (subscriptionPeriod == null)
-      {
-        print ("passing");
 
-      }
-
-    else{
-      if (dateNow.compareTo(subscriptionPeriod.endDate!) > 0) {
-        usersRef
-            .doc(widget.currentUserId)
-            .update({
-          'paid': false,
-        });
-      }
-    }
 
     return SafeArea(
       top: false,
@@ -122,32 +109,7 @@ Widget ui (BuildContext context, AsyncSnapshot snapshot, [SubscriptionPeriod? su
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<DocumentSnapshot>(
-      future: usersRef.doc(widget.currentUserId).get(),
-      builder: (context,AsyncSnapshot  snapshot) {
-        if (!snapshot.hasData) {
-          return Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ));
-        }
-        User user = User.fromDoc(snapshot.data);
-
-        return user.paid == true ? FutureBuilder<DocumentSnapshot>(
-          future: subPeriod.doc(widget.currentUserId).get(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (!snapshot.hasData) {
-              return Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ));
-            }
-            SubscriptionPeriod sub = SubscriptionPeriod.fromDoc(snapshot.data);
-            return ui(context, snapshot, sub);
-          },
-        ): ui(context, snapshot);
-      }
-    );
+    return ui(context);
   }
 
 

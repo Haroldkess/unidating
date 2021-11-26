@@ -378,105 +378,62 @@ class _FilterOptionsScreenState extends BaseRouteState {
                             ),
                           )),
                     ),
-                    // g.isDarkModeEnable
-                    //     ? Padding(
-                    //         padding: const EdgeInsets.only(top: 20.0),
-                    //         child: Text(
-                    //           "Age Range",
-                    //           style: Theme.of(context).accentTextTheme.headline5,
-                    //         ),
-                    //       )
-                    //     : Padding(
-                    //         padding: const EdgeInsets.only(top: 20.0),
-                    //         child: Row(
-                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //           children: [
-                    //             Text(
-                    //               "Age Range",
-                    //               style: Theme.of(context).accentTextTheme.headline5,
-                    //             ),
-                    //             Text(
-                    //               '18 - ${values.round()} age',
-                    //               style: Theme.of(context).accentTextTheme.headline6,
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ),
-                    // g.isDarkModeEnable
-                    //     ? Padding(
-                    //         padding: EdgeInsets.only(top: 10),
-                    //         child: Text(
-                    //           '18 - ${values.round()} age',
-                    //           style: Theme.of(context).primaryTextTheme.subtitle2,
-                    //         ),
-                    //       )
-                    //     : SizedBox(),
-                    // Slider(
-                    //     activeColor: Color.fromRGBO(246, 74, 105, 1),
-                    //     inactiveColor: Color.fromRGBO(35, 4, 254, 0.3),
-                    //     min: 18,
-                    //     max: 100,
-                    //     value: values,
-                    //     onChangeStart: (value){
-                    //       ageRange!.clear();
-                    //
-                    //
-                    //
-                    //     },
-                    //     onChanged: (value) {
-                    //
-                    //
-                    //
-                    //       setState(() {
-                    //         values = value;
-                    //
-                    //         // for (var val = 18 ; val < value.toInt() ; val++)
-                    //         // {
-                    //         //   ageRange!.add(val.toString());
-                    //         //   ageRange!.remove(values > value);
-                    //         //
-                    //         // }
-                    //
-                    //       //  filters!.add("${int.tryParse(value.toInt().toString())}");
-                    //
-                    //       });
-                    //     },
-                    //   onChangeEnd: (value){
-                    //
-                    //
-                    //
-                    //       setState(() {
-                    //         endValue = value.toInt();
-                    //       });
-                    //
-                    //       for (var val = 17 ; val < endValue! ; val++)
-                    //       {
-                    //         ageRange!.add(val.toString());
-                    //         //  ageRange!.remove(values > value);
-                    //         // ageRange!.forEach((element) {
-                    //         //   if (int.tryParse(element)! >=  value)
-                    //         //   {
-                    //         //     ageRange!.remove(element);
-                    //         //
-                    //         //
-                    //         //   }
-                    //         // });
-                    //         //
-                    //         // ageRange!.remove(value > values);
-                    //
-                    //
-                    //       }
-                    //
-                    //
-                    //       print(ageRange);
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //   },
-                    //
-                    //     ),
+                    g.isDarkModeEnable
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text(
+                              "Range",
+                              style: Theme.of(context).accentTextTheme.headline5,
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Range",
+                                  style: Theme.of(context).accentTextTheme.headline5,
+                                ),
+                                Text(
+                                  '0 - ${values.round()} km',
+                                  style: Theme.of(context).accentTextTheme.headline6,
+                                ),
+                              ],
+                            ),
+                          ),
+                    g.isDarkModeEnable
+                        ? Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              '0 - ${values.round()} km',
+                              style: Theme.of(context).primaryTextTheme.subtitle2,
+                            ),
+                          )
+                        : SizedBox(),
+                    Slider(
+                        activeColor: Color.fromRGBO(246, 74, 105, 1),
+                        inactiveColor: Color.fromRGBO(35, 4, 254, 0.3),
+                        min: 0,
+                        max: 1000,
+                        value: values,
+                        onChangeStart: (value){
+
+
+                        },
+                        onChanged: (value) {
+
+                          setState(() {
+                            values = value;
+
+                          });
+                        },
+                      onChangeEnd: (value){
+
+
+                      },
+
+                        ),
 
                     Align(
                       alignment: Alignment.center,

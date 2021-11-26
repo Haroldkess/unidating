@@ -18,7 +18,6 @@ class _IntroScreenState extends BaseRouteState {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
         child: Scaffold(
       key: _scaffoldKey,

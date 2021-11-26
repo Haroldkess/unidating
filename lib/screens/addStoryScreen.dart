@@ -109,10 +109,7 @@ class _AddStoryScreenState extends BaseRouteState {
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
               content: Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.3,
+
                 width: MediaQuery
                     .of(context)
                     .size
@@ -383,8 +380,23 @@ class _AddStoryScreenState extends BaseRouteState {
                 ],
               )
       );
+  var dateNow = Timestamp.fromDate(DateTime.now().toUtc());
+  Widget _uiAddStory(BuildContext context, snapshot, User thisUser, [SubscriptionPeriod? subscriptionPeriod]) {
+    if (subscriptionPeriod == null)
+    {
+      print ("passing");
 
-  Widget _uiAddStory(BuildContext context, snapshot, User thisUser) {
+    }
+
+    else{
+      if (dateNow.compareTo(subscriptionPeriod.endDate!) > 0) {
+        usersRef
+            .doc(widget.currentUserId)
+            .update({
+          'paid': false,
+        });
+      }
+    }
     return SafeArea(
       child: WillPopScope(
         onWillPop: () async {
@@ -1022,7 +1034,18 @@ class _AddStoryScreenState extends BaseRouteState {
               ));
         }
         User thisUser = User.fromDoc(snapshot.data);
-        return _uiAddStory(context, snapshot, thisUser);
+        return FutureBuilder<DocumentSnapshot>(
+          future: subPeriod.doc(widget.currentUserId).get(),
+          builder: (BuildContext context,AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            SubscriptionPeriod sub = SubscriptionPeriod.fromDoc(snapshot.data);
+            return _uiAddStory(context, snapshot, thisUser, sub);
+          }
+        );
       },
     );
   }
@@ -1788,7 +1811,7 @@ class _IntrestScreenState extends BaseRouteState {
                                     return Center(
                                         child: CircularProgressIndicator());
                                   }
-                                  return GridView.builder(
+                                  return post!.length > 0 ? GridView.builder(
                                     scrollDirection: Axis.horizontal,
                                     gridDelegate:
                                     SliverGridDelegateWithMaxCrossAxisExtent(
@@ -1800,7 +1823,7 @@ class _IntrestScreenState extends BaseRouteState {
                                       mainAxisSpacing: 2.0,
                                       crossAxisSpacing: 2.0,
                                     ),
-                                    itemCount: post!.length,
+                                    itemCount: post.length,
                                     itemBuilder: (ctx, index) {
                                       return GestureDetector(
                                         onTap: () {
@@ -1862,7 +1885,8 @@ class _IntrestScreenState extends BaseRouteState {
                                         ),
                                       );
                                     },
-                                  );
+                                  ) :
+                                  SizedBox.shrink();
                                 }
                             ),
                             Container(),

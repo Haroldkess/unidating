@@ -90,7 +90,7 @@ class MyAppState extends State<MyApp> {
         {
           Provider.of<GoogleSignInProvider>(context, listen:  false);
           final user = FirebaseAuth.instance.currentUser!;
-         // print(user.uid);
+          print("this is your id ${user.uid}");
 
           return SplashScreen(
             currentUserId: user.uid,
