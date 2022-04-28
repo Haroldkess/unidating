@@ -1,10 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' ;
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_dating/constant_firebase.dart';
 import 'package:uni_dating/google_sign_in.dart';
+import 'package:uni_dating/model/test_model.dart';
+
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
 import 'package:uni_dating/models/businessLayer/global.dart' as g;
+import 'package:uni_dating/screens/privacy_policy_page.dart';
 import 'package:uni_dating/screens/profileDetailScreen.dart';
 import 'package:uni_dating/screens/verifyOtpScreen.dart';
 import 'package:flutter/material.dart';
@@ -360,6 +364,33 @@ class _LoginScreenState extends BaseRouteState {
               "We will send you a 4-digit code to verify",
               style: Theme.of(context).primaryTextTheme.subtitle2,
             ),
+
+            SizedBox(height: 10.0,),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "By login in or signing up you accept our T&C.",
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "view our terms and conditions here",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+                    TextButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PrivacyPolicy()));
+                      },
+                      child: Text("Click here",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold) ,),
+                    )
+                  ],
+                ),
+              ],
+            ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               padding: EdgeInsets.all(1.5),
@@ -560,9 +591,239 @@ class _LoginScreenState extends BaseRouteState {
                   // ),
                   GestureDetector(
                     onTap: () async {
+                      //signInWithPhoneAuthCredential(phoneAuthCredential);
 
                       var provider =  Provider.of<GoogleSignInProvider>(context, listen:  false );
                       await  provider.googleLogin();
+                    },
+                    child: Padding(
+                      padding: g.isRTL ? const EdgeInsets.only(right: 15) : const EdgeInsets.only(left: 15),
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundColor: Color(0xFFDF4D5F),
+                        child: Text(
+                          'G',
+                          style: Theme.of(context).accentTextTheme.headline2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  getMobileFormWidgetAnonymous(context){
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                "Login Anonymously",
+                style: Theme.of(context).primaryTextTheme.headline1,
+              ),
+            ),
+            Text(
+              "Please enter your valid mobile number.",
+              style: Theme.of(context).primaryTextTheme.subtitle2,
+            ),
+            Text(
+              "We will send you a 4-digit code to verify",
+              style: Theme.of(context).primaryTextTheme.subtitle2,
+            ),
+            SizedBox(height: 10.0,),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "By login in or signing up you accept our T&C.",
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "view our terms and conditions here",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+                    TextButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PrivacyPolicy()));
+                      },
+                      child: Text("Click here",style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold) ,),
+                    )
+                  ],
+                ),
+              ],
+            ),
+
+
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              padding: EdgeInsets.all(1.5),
+              height: 55,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: g.gradientColors,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(35),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: g.isDarkModeEnable ? Colors.black : Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                height: 55,
+                child: TextFormField(
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(20),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                                Icons.phone
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Phone',
+                              style: Theme.of(context).primaryTextTheme.subtitle2,
+                            ),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(4.0),
+                          //   child: Icon(
+                          //     Icons.expand_more,
+                          //     color: Theme.of(context).iconTheme.color,
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: VerticalDivider(
+                              thickness: 2,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: 50,
+              width: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: g.gradientColors,
+                ),
+              ),
+              child: TextButton(
+                onPressed: () async {
+                  var provider =  Provider.of<GoogleSignInProvider>(context, listen:  false );
+                  await  provider.anonymous();
+
+                },
+                child: Text(
+                  "Submit",
+                  style: Theme.of(context).textButtonTheme.style!.textStyle!.resolve({
+                    MaterialState.pressed,
+                  }),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 25, bottom: 20),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(15),
+                    height: 0.5,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: g.gradientColors,
+                      ),
+                    ),
+                    child: Divider(),
+                  ),
+                  Container(
+                      margin: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(
+                          color: Color(0xFF3F1444),
+                        ),
+                      ),
+                      child: g.isDarkModeEnable
+                          ? CircleAvatar(
+                        radius: 24,
+                        backgroundColor: Colors.black,
+                        child: Text(
+                          "OR",
+                          style: Theme.of(context).primaryTextTheme.subtitle2,
+                        ),
+                      )
+                          : CircleAvatar(
+                        radius: 24,
+                        backgroundColor: Colors.white,
+                        child: Text(
+                          "OR",
+                          style: Theme.of(context).primaryTextTheme.subtitle2,
+                        ),
+                      ))
+                ],
+              ),
+            ),
+            Text(
+              "Login Using",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // CircleAvatar(
+                  //   radius: 25,
+                  //   backgroundColor: Color(0xFF2942C7),
+                  //   child: Text(
+                  //     'f',
+                  //     style: Theme.of(context).accentTextTheme.headline2,
+                  //   ),
+                  // ),
+                  GestureDetector(
+                    onTap: () async {
+                      var provider =  Provider.of<GoogleSignInProvider>(context, listen:  false );
+                      await  provider.anonymous();
+
+
                     },
                     child: Padding(
                       padding: g.isRTL ? const EdgeInsets.only(right: 15) : const EdgeInsets.only(left: 15),
@@ -639,6 +900,7 @@ class _LoginScreenState extends BaseRouteState {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -654,15 +916,28 @@ class _LoginScreenState extends BaseRouteState {
           resizeToAvoidBottomInset: false,
           key: _scaffoldKey,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          body: Container(
-            child: showLoading!
-                ? Center(
-              child: CircularProgressIndicator(),
-            )
-                : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
-                ? getMobileFormWidget(context)
-                : getOtpFromWidget(context),
-            padding: const EdgeInsets.all(16),
+          body: FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection("test").doc("test1997").get(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData)
+                {
+                  return Center(child: CircularProgressIndicator());
+                }
+              Test test = Test.fromDoc(snapshot.data);
+              return test.test == false ? Container(
+                child: showLoading!
+                    ? Center(
+                  child: CircularProgressIndicator(),
+                )
+                    : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
+                    ? getMobileFormWidget(context)
+                    : getOtpFromWidget(context),
+                padding: const EdgeInsets.all(16),
+              ) : Container(
+                child:   getMobileFormWidgetAnonymous(context),
+                padding: const EdgeInsets.all(16),
+              ) ;
+            }
           )),
     ));
   }

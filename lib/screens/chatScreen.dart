@@ -707,43 +707,7 @@ class _ChatScreenState extends BaseRouteState {
   @override
   void initState() {
     super.initState();
-    // _scrollToBottom();
-    //
-    // time =  Timer.periodic(Duration(milliseconds: 100), (timer) {
-    //    if (mounted) {
-    //      _scrollToBottom();
-    //    } else {
-    //      timer.cancel();
-    //    }
-    //  }).cancel();
-    // SchedulerBinding.instance!.addPostFrameCallback((_) {
-    //   _listScrollController2!.jumpTo(_listScrollController2!.position.maxScrollExtent);
-    //   _listScrollController!.jumpTo(_listScrollController!.position.maxScrollExtent);
-    // });
 
-    // SchedulerBinding.instance!.addPostFrameCallback((_) {
-    //   _listScrollController!.animateTo(
-    //     _listScrollController!.position.maxScrollExtent,
-    //     duration: Duration(milliseconds: 250),
-    //     curve: Curves.easeInOut,
-    //   );
-    // });
-
-    // _controller =
-    //     AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    // _animation = Tween(begin: 300.0, end: 50.0).animate(_controller!)
-    //   ..addListener(() {
-    //     setState(() {
-    //
-    //     });
-    //   });
-    // myFocusNode!.addListener(() {
-    //   if (myFocusNode!.hasFocus) {
-    //     _controller!.forward();
-    //   } else {
-    //     _controller!.reverse();
-    //   }
-    // });
     _tabController =
         new TabController(length: 2, vsync: this, initialIndex: _currentIndex);
     _tabController.addListener(_tabControllerListener);

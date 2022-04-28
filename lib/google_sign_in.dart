@@ -97,6 +97,89 @@ class GoogleSignInProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future anonymous() async {
+    // final googleUser = await googleSignIn.signIn();
+    // if (googleUser == null) return;
+    // _user = googleUser;
+    //
+    // final googleAuth = await googleUser.authentication;
+
+    UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: "unidating@gmail.com",
+        password: "password"
+    );
+
+    var id;
+
+
+
+    final user = FirebaseAuth.instance.currentUser!;
+
+    List<String> ids = [];
+    bool? exist;
+    await usersRef.get().then((value) {
+      value.docs.forEach((element) async {
+        String id = element.id;
+        ids..addAll([id]);
+        print("this is the element id $ids");
+        if (ids.contains(user.uid.toString()) ||
+            (element.id == user.uid.toString()) ||
+            id == user.uid) {
+          exist = true;
+        } else {
+          exist = false;
+        }
+
+        //   print(exist);
+      });
+    });
+
+    if (exist == true) {
+      print("thia user exist");
+      await usersRef.doc(user.uid).update({
+        'id': user.uid,
+        'onlineStatus': true,
+        'onlineOffline': true,
+      });
+      notifyListeners();
+
+      return;
+    }
+
+    if (exist == false) {
+      //   print(exist);
+      await usersRef.doc(user.uid).set({
+        'name': 'test',
+        'phoneNumber': '',
+        'email': user.email,
+        'profileImageUrl': '',
+        'id': user.uid,
+        'onlineStatus': true,
+        'paid': false,
+        'onlineOffline': true,
+        'lastMessage': '',
+        'read': false,
+        'dob': 0,
+        'gender': '',
+        'bio': '',
+        'like': 0,
+        'love': 0,
+        'notificationNumber': 0,
+        'filters': ['0', '0'],
+        'intrests': ['Photography', 'Music', 'Swimming'],
+      });
+
+      await subPeriod.doc(user.uid).set({
+        'endDate': Timestamp.now().toDate().subtract(Duration(days: 10)),
+        'paid': false,
+        'startDate': Timestamp.now().toDate().toLocal(),
+        'type': 'null'
+      });
+    }
+
+    notifyListeners();
+  }
+
   Future<void> signInWithPhoneAuthCredential(
       PhoneAuthCredential phoneAuthCredential) async {
     // setState(() {

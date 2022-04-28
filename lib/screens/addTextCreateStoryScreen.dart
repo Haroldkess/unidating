@@ -84,7 +84,7 @@ List <String> _user = [];
   void initState() {
     super.initState();
   }
-  bool? isLoading;
+  bool? isLoading = false;
 
   PreferredSizeWidget _appBarWidget(User thisUser) {
     return PreferredSize(

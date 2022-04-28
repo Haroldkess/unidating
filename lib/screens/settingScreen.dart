@@ -10,6 +10,7 @@ import 'package:uni_dating/screens/datingMatchingScreen.dart';
 import 'package:uni_dating/screens/liked&LikesScreen.dart';
 import 'package:uni_dating/screens/likes&IntrestScreen.dart';
 import 'package:uni_dating/screens/notificationListScreen.dart';
+import 'package:uni_dating/screens/privacy_policy_page.dart';
 import 'package:uni_dating/screens/rewardScreen.dart';
 import 'package:uni_dating/screens/selectPlanScreen.dart';
 import 'package:uni_dating/widgets/bottomNavigationBarWidgetDark.dart';
@@ -648,94 +649,104 @@ class _SettingScreenState extends BaseRouteState {
                   ),
 
 
-                  Padding(
-                    padding: EdgeInsets.only(right: 8, top: 8, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.help_center,
-                          color: Theme.of(context).iconTheme.color,
-                          size: 18,
-                        ),
-                        ShaderMask(
-                          blendMode: BlendMode.srcIn,
-                          shaderCallback: (Rect bounds) {
-                            return LinearGradient(
-                              colors: g.gradientColors,
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ).createShader(bounds);
-                          },
-                          child: Padding(
-                            padding: g.isRTL ? const EdgeInsets.only(right: 10) : const EdgeInsets.only(left: 10),
-                            child: Text(
-                              "Help Centre",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(right: 8, top: 8, bottom: 8),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.start,
+                  //     children: [
+                  //       Icon(
+                  //         Icons.help_center,
+                  //         color: Theme.of(context).iconTheme.color,
+                  //         size: 18,
+                  //       ),
+                  //       ShaderMask(
+                  //         blendMode: BlendMode.srcIn,
+                  //         shaderCallback: (Rect bounds) {
+                  //           return LinearGradient(
+                  //             colors: g.gradientColors,
+                  //             begin: Alignment.centerLeft,
+                  //             end: Alignment.centerRight,
+                  //           ).createShader(bounds);
+                  //         },
+                  //         child: Padding(
+                  //           padding: g.isRTL ? const EdgeInsets.only(right: 10) : const EdgeInsets.only(left: 10),
+                  //           child: Text(
+                  //             "Help Centre",
+                  //             style: TextStyle(fontWeight: FontWeight.bold),
+                  //           ),
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> PrivacyPolicy()));
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 8, top: 8, bottom: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.pages,
+                            color: Theme.of(context).iconTheme.color,
+                            size: 18,
                           ),
-                        )
-                      ],
+                          ShaderMask(
+                            blendMode: BlendMode.srcIn,
+                            shaderCallback: (Rect bounds) {
+                              return LinearGradient(
+                                colors: g.gradientColors,
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ).createShader(bounds);
+                            },
+                            child: Padding(
+                              padding: g.isRTL ? const EdgeInsets.only(right: 10) : const EdgeInsets.only(left: 10),
+                              child: Text(
+                                "Terms & Conditions",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 8, top: 8, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.pages,
-                          color: Theme.of(context).iconTheme.color,
-                          size: 18,
-                        ),
-                        ShaderMask(
-                          blendMode: BlendMode.srcIn,
-                          shaderCallback: (Rect bounds) {
-                            return LinearGradient(
-                              colors: g.gradientColors,
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ).createShader(bounds);
-                          },
-                          child: Padding(
-                            padding: g.isRTL ? const EdgeInsets.only(right: 10) : const EdgeInsets.only(left: 10),
-                            child: Text(
-                              "Terms & Conditions",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> PrivacyPolicy()));
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 8, top: 8, bottom: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.privacy_tip,
+                            color: Theme.of(context).iconTheme.color,
+                            size: 18,
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 8, top: 8, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.privacy_tip,
-                          color: Theme.of(context).iconTheme.color,
-                          size: 18,
-                        ),
-                        ShaderMask(
-                          blendMode: BlendMode.srcIn,
-                          shaderCallback: (Rect bounds) {
-                            return LinearGradient(
-                              colors: g.gradientColors,
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ).createShader(bounds);
-                          },
-                          child: Padding(
-                            padding: g.isRTL ? const EdgeInsets.only(right: 10) : const EdgeInsets.only(left: 10),
-                            child: Text(
-                              "Privacy Policy",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                          ShaderMask(
+                            blendMode: BlendMode.srcIn,
+                            shaderCallback: (Rect bounds) {
+                              return LinearGradient(
+                                colors: g.gradientColors,
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ).createShader(bounds);
+                            },
+                            child: Padding(
+                              padding: g.isRTL ? const EdgeInsets.only(right: 10) : const EdgeInsets.only(left: 10),
+                              child: Text(
+                                "Privacy Policy",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

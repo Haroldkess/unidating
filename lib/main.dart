@@ -108,6 +108,7 @@ class MyAppState extends State<MyApp> {
     );
 
   }
+
   @override
   Widget build(BuildContext context) {
     //final provider = Provider.of<LocaleProvider>(context,listen:  false);

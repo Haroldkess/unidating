@@ -156,7 +156,7 @@ class _StartUpEditProfilePageState extends BaseRouteState {
   //   }
 
 
-    if (file == null) {
+    if (file == null && (widget.thisProfileUser!.profileImageUrl == null || widget.thisProfileUser!.profileImageUrl!.length < 4)  ) {
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor:
@@ -192,66 +192,111 @@ class _StartUpEditProfilePageState extends BaseRouteState {
 
     }
 
-    if (file == null) return;
+    if (file != null  && (widget.thisProfileUser!.profileImageUrl == null  || widget.thisProfileUser!.profileImageUrl!.length < 4))
+      {
+        final fileName = basename(file!.path);
+        final destination = 'files/$fileName';
 
-    final fileName = basename(file!.path);
-    final destination = 'files/$fileName';
+        task = FirebaseApi.uploadFile(destination, file!);
+        setState(() {});
 
-    task = FirebaseApi.uploadFile(destination, file!);
-    setState(() {});
+        if (task == null) return;
 
-    if (task == null) return;
+        final snapshot = await task!.whenComplete(() {});
+        final urlDownload = await snapshot.ref.getDownloadURL();
 
-    final snapshot = await task!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
+        url = urlDownload;
 
-    url = urlDownload;
+        // User user = User(
+        //   name: _cFirstName.text.toString(),
+        //   phoneNumber: phone,
+        //   profileImageUrl: url,
+        //   dob: dob,
+        //   gender: _gender,
+        // );
+        // Database update
 
-    // User user = User(
-    //   name: _cFirstName.text.toString(),
-    //   phoneNumber: phone,
-    //   profileImageUrl: url,
-    //   dob: dob,
-    //   gender: _gender,
-    // );
-    // Database update
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor:
+          Theme.of(context).primaryColorLight,
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor:
-      Theme.of(context).primaryColorLight,
-
-      content: Text("please wait while we update your profile"),
-      //  backgroundColor: Colors.black,
-    ));
+          content: Text("please wait while we update your profile"),
+          //  backgroundColor: Colors.black,
+        ));
 
 
-    await usersRef.doc(widget.currentUserId.toString()).update({
-      'name': firstName.toString(),
-      'phoneNumber': phone.toString(),
-      'dob': int.tryParse(dob.toString()),
-      'gender': _gender.toString(),
-      'bio': bio.toString(),
-      'profileImageUrl': urlDownload,
-      'filters': FieldValue.arrayUnion(filter),
+        await usersRef.doc(widget.currentUserId.toString()).update({
+          'name': firstName.toString(),
+          'phoneNumber': phone.toString(),
+          'dob': int.tryParse(dob.toString()),
+          'gender': _gender.toString(),
+          'bio': bio.toString(),
+          'profileImageUrl': urlDownload,
+          'filters': FieldValue.arrayUnion(filter),
 
-    });
+        });
 
-    print('Download-Link: $urlDownload');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor:
-      Theme.of(context).primaryColorLight,
+        print('Download-Link: $urlDownload');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor:
+          Theme.of(context).primaryColorLight,
 
-      content: Text("Profile Updated"),
-      //  backgroundColor: Colors.black,
-    ));
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => LikesIntrestScreen(
-          currentUserId: widget.currentUserId,
-          a: widget.analytics,
-          o: widget.observer,
-        )));
+          content: Text("Profile Updated"),
+          //  backgroundColor: Colors.black,
+        ));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => LikesIntrestScreen(
+              currentUserId: widget.currentUserId,
+              a: widget.analytics,
+              o: widget.observer,
+            )));
 
-   // Navigator.pop(context);
+        // Navigator.pop(context);
+      }
+
+    if (file == null  && (widget.thisProfileUser!.profileImageUrl != null || widget.thisProfileUser!.profileImageUrl!.length > 4))
+    {
+
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor:
+        Theme.of(context).primaryColorLight,
+
+        content: Text("please wait while we update your profile"),
+        //  backgroundColor: Colors.black,
+      ));
+
+
+      await usersRef.doc(widget.currentUserId.toString()).update({
+        'name': firstName.toString(),
+        'phoneNumber': phone.toString(),
+        'dob': int.tryParse(dob.toString()),
+        'gender': _gender.toString(),
+        'bio': bio.toString(),
+        'profileImageUrl': widget.thisProfileUser!.profileImageUrl,
+        'filters': FieldValue.arrayUnion(filter),
+
+      });
+
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor:
+        Theme.of(context).primaryColorLight,
+
+        content: Text("Profile Updated"),
+        //  backgroundColor: Colors.black,
+      ));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => LikesIntrestScreen(
+            currentUserId: widget.currentUserId,
+            a: widget.analytics,
+            o: widget.observer,
+          )));
+
+      // Navigator.pop(context);
+    }
+
+
 
   }
 

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_dating/constant_firebase.dart';
 import 'package:uni_dating/model/user_model.dart';
 import 'package:uni_dating/models/businessLayer/baseRoute.dart';
@@ -649,12 +650,27 @@ class _AddStoryScreenState extends BaseRouteState {
                                           Icons.bug_report,
                                         ),
                                         color: Colors.white,
-                                        onPressed: () {
-                                          g.isDarkModeEnable =
-                                          !g.isDarkModeEnable;
-                                          // SharedPreferences sp = await SharedPreferences.getInstance();
-                                          // sp.setBool('isDarkMode', g.isDarkModeEnable);
-                                          Phoenix.rebirth(context);
+                                        onPressed: () async{
+
+                                          if(  subscriptionPeriod!.paid == false)
+                                            {
+                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Only available to paid users")));
+
+                                            }
+                                          if(  subscriptionPeriod.paid == true)
+                                          {
+                                            g.isDarkModeEnable =
+                                            !g.isDarkModeEnable;
+                                             SharedPreferences sp = await SharedPreferences.getInstance();
+                                             sp.setBool('isDarkMode', g.isDarkModeEnable);
+                                            Phoenix.rebirth(context);
+
+                                          }
+
+
+
+
+
                                           // Navigator.push(
                                           //     context,
                                           //     MaterialPageRoute(
@@ -773,36 +789,46 @@ class _AddStoryScreenState extends BaseRouteState {
                                             height: 50,
                                             padding:
                                             EdgeInsets.only(left: 8),
-                                            child: DotsIndicator(
-                                              dotsCount: users == null ||
-                                                  users!.length <= 0
-                                                  ? 3
-                                                  : users!.length,
-                                              position:
-                                              _current!.toDouble(),
-                                              decorator: DotsDecorator(
-                                                spacing:
-                                                EdgeInsets.all(3),
-                                                color: Colors.transparent,
-                                                activeColor: Colors.white,
-                                                activeShape:
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(5.0),
-                                                  side: BorderSide(
-                                                      color:
-                                                      Colors.white),
-                                                ),
-                                                shape:
-                                                RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius
-                                                      .circular(5.0),
-                                                  side: BorderSide(
-                                                      color:
-                                                      Colors.white),
-                                                ),
+                                            child: SizedBox(
+                                              height: 10,
+                                              width: MediaQuery.of(context).size.width / 2.5,
+                                              child: ListView(
+                                                scrollDirection: Axis.horizontal,
+                                                children: [
+                                                  DotsIndicator(
+
+                                                    dotsCount: users == null ||
+                                                        users!.length <= 0
+                                                        ? 3
+                                                        : users!.length,
+                                                    position:
+                                                    _current!.toDouble(),
+                                                    decorator: DotsDecorator(
+                                                      spacing:
+                                                      EdgeInsets.all(3),
+                                                      color: Colors.transparent,
+                                                      activeColor: Colors.white,
+                                                      activeShape:
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(5.0),
+                                                        side: BorderSide(
+                                                            color:
+                                                            Colors.white),
+                                                      ),
+                                                      shape:
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(5.0),
+                                                        side: BorderSide(
+                                                            color:
+                                                            Colors.white),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),
